@@ -1,0 +1,114 @@
+// --------------------------------
+
+// Colors 🌈
+
+// --------------------------------
+$primary: #3731F7;
+$primary-shade: #2E2BAB;
+
+$base-yellow: #F7F74A;
+$base-green: #2CFA52;
+$base-pink: #fa56b9;
+
+@mixin lightenBase($color) {
+    background-color: lighten($color, 15%);
+  }
+
+// Text and other neutral accent elements
+$text: #202223;
+$text-subtle: #6d7175;
+$line-default: #8c9196;
+
+// Neutrals
+$surface-white: #ffffff;
+$surface-light: #f6f6f7;
+$surface-medium: #89969f;
+$surface-dark: #647882;
+
+// Rainbow colors for demo/editing use only
+// lazy source: https://maketintsandshades.com/#dc3838,f7631e,fecc30,b2c224,33beb8,a463d8,ef657a
+$rb-red: #dc3838;
+$rb-red-tint: #fcebeb;
+$rb-red-shade: #ee9c9c;
+
+$rb-orange: #f7631e;
+$rb-orange-tint: #feefe9;
+$rb-orange-shade: #fbb18f;
+// $rb-orange-two: #faa328;
+$rb-yellow: #fecc30;
+$rb-yellow-tint: #fffaea;
+$rb-yellow-shade: #ffe698;
+
+$rb-green: #b2c224;
+$rb-green-tint: #f7f9e9;
+$rb-green-shade: #d9e192;
+
+$rb-blue: #33beb8;
+$rb-blue-tint: #ebf9f8;
+$rb-blue-shade: #99dfdc;
+
+$rb-indigo: #a463d8;
+$rb-indigo-tint: #f6effb;
+$rb-indigo-shade: #d2b1ec;
+
+$rb-violet: #ef657a;
+$rb-violet-tint: #fdf0f2;
+$rb-violet-shade: #f7b2bd;
+
+// --------------------------------
+
+// Size Values 📏
+
+// --------------------------------
+$xl: 48px;
+$lg: 24px;
+$md: 16px;
+$sm: 12px;
+$xs: 8px;
+
+$line-height-compact: 1.2;
+$line-height-regular: 1.4;
+$line-height-spaced: 1.7;
+
+$font-weight-light: 300;
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-bold: 700;
+
+$br: 15px;
+
+// --------------------------------
+
+// Typography 🔤
+
+// --------------------------------
+
+html {
+    font-size: 16px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    color: $text;
+}
+
+h1 {
+    font-size: 32px;
+}
+h2 {
+    font-size: 24px;
+}
+h3 {
+    font-size: 18px;
+}
+h4 {
+    font-size: 16px;
+}
+h5 {
+    font-size: 13px;
+}
+
+h1, h2, h3, h4, h5 {
+    line-height: $line-height-spaced;
+    color: $text;
+}

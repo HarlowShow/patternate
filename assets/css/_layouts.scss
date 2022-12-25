@@ -1,0 +1,12 @@
+// the outermost container, should handle basic stuff like width, viewport, media queries
+.outer-wrapper {
+    @extend .m-lg, .flex-center;
+    background: $surface-white;
+}
+
+// inner wrapper, for padding etc.
+.inner-wrapper {
+    @extend .p-md;
+    width: 100%;
+    height: 100%;
+}

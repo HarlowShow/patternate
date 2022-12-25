@@ -1,0 +1,189 @@
+// --------------------------------
+
+// Utilities
+
+// --------------------------------
+@use 'base';
+
+// #region line-height
+
+.lh-compact {
+    line-height: base.$line-height-compact;
+}
+
+.lh-regular {
+    line-height: base.$line-height-regular;
+}
+
+.lh-spaced {
+    line-height: base.$line-height-spaced;
+}
+// #endregion
+
+// #region font-weight
+.fw-light {
+    font-weight: base.$font-weight-light;
+}
+.fw-regular {
+    font-weight: base.$font-weight-regular;
+}
+.fw-medium {
+    font-weight: base.$font-weight-medium;
+}
+
+.fw-bold {
+    font-weight: base.$font-weight-bold;
+}
+// #endregion
+
+// #region background colours
+    .bg-s-w {
+        background-color: base.$surface-white;
+    }
+    .bg-s-l {
+        background-color: base.$surface-light;
+    }
+    .bg-s-m {
+        background-color: base.$surface-medium;
+    }
+    .bg-s-d {
+        background-color: base.$surface-dark;
+    }
+// #endregion
+
+// #region padding classes
+    .p-xs { padding: base.$xs; }
+    .p-sm { padding: base.$sm; }
+    .p-md { padding: base.$md; }
+    .p-lg { padding: base.$lg; }
+    .p-xl { padding: base.$xl; }
+    .no-pad { padding: 0;}
+    // #endregion
+
+// #region margin classes
+    .m-xs { margin: base.$xs; }
+    .m-sm { margin: base.$sm; }
+    .m-md { margin: base.$md; }
+    .m-lg { margin: base.$lg; }
+    .m-xl { margin: base.$xl; }
+// #endregion
+
+// #region flex classes
+    .flex-center {
+        display: flex;
+        place-content: center;
+    }
+    .flex {
+        display: flex;
+    }
+
+    .flex-row {
+        display: flex;
+        flex-direction: row;
+    }
+    .flex-column {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .flex-1 {
+        flex: 1;
+    }
+    .flex-2 {
+        flex: 2;
+    }
+    .flex-3 {
+        flex: 3;
+    }
+    .flex-4 {
+        flex: 4;
+    }
+// #endregion
+
+// #region demo/editor classes
+.rb-r, .rb-o, .rb-y, .rb-g, .rb-b, .rb-i, .rb-v {
+    border-style: solid;
+}
+
+.rb-r {
+    border-color: base.$rb-red-shade;
+    border-width: 7px;
+    background-color: base.$rb-red-tint;
+}
+
+.rb-o {
+    border-color: base.$rb-orange-shade;
+    border-width: 6px;
+    background-color: base.$rb-orange-tint;
+}
+
+.rb-y {
+    border-color: base.$rb-yellow-shade;
+    border-width: 5px;
+    background-color: base.$rb-yellow-tint;
+}
+
+.rb-g {
+    border-color: base.$rb-green-shade;
+    border-width: 4px;
+    background-color: base.$rb-green-tint;
+}
+
+.rb-b {
+    border-color: base.$rb-blue-shade;
+    border-width: 3px;
+    background-color: base.$rb-blue-tint;
+}
+
+.rb-i {
+    border-color: base.$rb-indigo-shade;
+    border-width: 2px;
+    background-color: base.$rb-indigo-tint;
+}
+
+.rb-v {
+    border-color: base.$rb-violet-shade;
+    border-width: 1px;
+    background-color: base.$rb-violet-tint;
+}
+
+// border demo - temp classes for easier layout editing
+.bd {
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
+}
+
+.bd-red {
+@extend .bd;
+border-color: red;
+}
+// #endregion
+
+// #region rainbow background
+.bg-rb-r {
+    background-color: rgba(base.$rb-red, 0.1);
+}
+.bg-rb-o {
+    background-color: rgba(base.$rb-orange, 0.1);
+}
+.bg-rb-y {
+    background-color: rgba(base.$rb-yellow, 0.1);
+}
+.bg-rb-g {
+    background-color: rgba(base.$rb-green, 0.1);
+}
+.bg-rb-b {
+    background-color: rgba(base.$rb-blue, 0.1);
+}
+.bg-rb-i {
+    background-color: rgba(base.$rb-indigo, 0.1);
+}
+.bg-rb-v {
+    background-color: rgba(base.$rb-violet, 0.1);
+}
+// #endregion
+
+hr {
+    width: 80%;
+}
