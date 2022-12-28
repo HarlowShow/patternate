@@ -2,50 +2,50 @@
     <div class="image-holder">
         <img ref="image" class="image" src="~/assets/christmas_small.png"/>
     </div>
+    <button @click="drawImage()">Draw!</button>
+    <div>
+        {{  width  }} {{  height }}
+    </div>
     <canvas ref="canvas" class="canvas" height="400" width="400">
     </canvas>
 </template>
 
 <script setup lang="ts">
 import { ref, Ref } from 'vue';
-// import { useCounter } from '../stores/counter'
-console.log('hello world');
-// const counter = useCounter()
-const canvas = ref<HTMLCanvasElement>()
-const ctx: Ref <CanvasRenderingContext2D | null > = ref(null);
+import { maybeNull } from '~~/models/models';
+import { useConfigStore } from '~~/stores/config';
 
-type isNotNull<T> = {
-    kind: 'success',
-    value: T,
-}
+const { canvasDimensions, updateImageDimensions } = useConfigStore()
+const width = computed(() => canvasDimensions.width)
+const height = computed(() => canvasDimensions.height)
 
-type isNull = {
-    kind: 'failure',
-    reason: string,
-}
-
-type maybeNull<T> = isNotNull<T> | isNull;
-
-    function nullCheck<T>(element: T | null): maybeNull<T> {
+function nullCheck<T>(element: T | null | undefined): maybeNull<T> {
     if (element !== null && element !== undefined) {
         return { kind: 'success', value: element }
     }
     return { kind: 'failure', reason: 'element is null' }
 }
 
-onMounted(() => {
+const canvas = ref<HTMLCanvasElement>()
+const ctx: Ref <CanvasRenderingContext2D | null > = ref(null);
+
+const drawImage = (async () => {
     console.log('on Mounted')
-    const canvasCheck = nullCheck(canvas.value);
+    const canvasCheck = nullCheck<HTMLCanvasElement>(canvas.value);
     if (canvasCheck.kind === 'success') {
     ctx.value = canvas.value.getContext('2d') as CanvasRenderingContext2D;
     console.log(ctx.value);
-    const image = document.getElementsByClassName('image')[0];
-            ctx.value.drawImage(image as CanvasImageSource, 50, 50);
-            
-    // image.src = '../assets/images/christmas.png'
+    const image = document.getElementsByClassName('image')[0] as CanvasImageSource;
+    await nextTick()
+    updateImageDimensions(image.width, image.height)
+    ctx.value.drawImage(image as CanvasImageSource, 0, 0);
     } else {
         console.error(canvasCheck.reason);
     }
+})
+
+onMounted(() => {
+drawImage();
 })
 
 

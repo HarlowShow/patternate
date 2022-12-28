@@ -12,19 +12,33 @@
         <div class="menu-item flex-column">
           <h6 class="lh-spaced fw-medium">Settings</h6>
           <div class="inline-input">
-            <label for="height">Height (hexes):</label>
-            <input type="number" name="height">
+            <label for="width">Width (hexes):</label>
+            <input v-model.number="chosenWidth" 
+            @change="updateCanvasWidth(chosenWidth)"
+            name="width">
           </div>
           <div class="inline-input">
-            <label for="width">Width (hexes):</label>
-            <input type="number" name="width">
+            <label for="height">Height (hexes):</label>
+            <input v-model.number="chosenHeight" 
+            @change="updateCanvasHeight(chosenHeight)"
+            name="height">
           </div>
         </div>
     </div>
   </template>
 <script setup lang="ts">
-// import { useCounter } from '../stores/counter'
-// const counter = useCounter()
+import { useConfigStore } from '~~/stores/config';
+
+const { 
+  // canvasDimensions, 
+  updateCanvasWidth, 
+  updateCanvasHeight 
+} = useConfigStore()
+
+// const width = computed(() => canvasDimensions.width)
+// const height = computed(() => canvasDimensions.height)
+const chosenWidth = 0;
+const chosenHeight = 0;
 </script>
 
 <style lang="scss">
