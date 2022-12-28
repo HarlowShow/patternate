@@ -1,9 +1,202 @@
 <template>
-    <h1>A canvas!</h1>
+    <div class="image-holder">
+        <img ref="image" class="image" src="~/assets/christmas_small.png"/>
+    </div>
+    <canvas ref="canvas" class="canvas" height="400" width="400">
+    </canvas>
 </template>
 
 <script setup lang="ts">
+import { ref, Ref } from 'vue';
 // import { useCounter } from '../stores/counter'
 console.log('hello world');
 // const counter = useCounter()
+const canvas = ref<HTMLCanvasElement>()
+const ctx: Ref <CanvasRenderingContext2D | null > = ref(null);
+
+type isNotNull<T> = {
+    kind: 'success',
+    value: T,
+}
+
+type isNull = {
+    kind: 'failure',
+    reason: string,
+}
+
+type maybeNull<T> = isNotNull<T> | isNull;
+
+    function nullCheck<T>(element: T | null): maybeNull<T> {
+    if (element !== null && element !== undefined) {
+        return { kind: 'success', value: element }
+    }
+    return { kind: 'failure', reason: 'element is null' }
+}
+
+onMounted(() => {
+    console.log('on Mounted')
+    const canvasCheck = nullCheck(canvas.value);
+    if (canvasCheck.kind === 'success') {
+    ctx.value = canvas.value.getContext('2d') as CanvasRenderingContext2D;
+    console.log(ctx.value);
+    const image = document.getElementsByClassName('image')[0];
+            ctx.value.drawImage(image as CanvasImageSource, 50, 50);
+            
+    // image.src = '../assets/images/christmas.png'
+    } else {
+        console.error(canvasCheck.reason);
+    }
+})
+
+
+// const drawImage = (() => {
+//     const image = new Image()
+//     image.addEventListener(
+//         "load",
+//         () => {
+//             if (ctx !== null && ctx !== undefined) {
+//                 console.log('drawing image')
+//                 ctx.drawImage(image, 50, 50);
+//             } else {
+//                 console.error('ctx null or undefined')
+//             }
+//         },
+//         false
+//         );
+//         image.src = '../assets/demo/christmas_small.png'
+// })
+
+
+
+    
+/* 
+let triangle;
+
+
+// s - the length of a single side
+let s;
+let h;
+// the length of the canvas, determined by the number of hexes along
+let canvasLength;
+let canvasHeight;
+// number of hexagons to tile horizontally. Must be an even no.
+let hexLength = 6;
+let hexHeight = 6;
+
+// running coordinates for drawing the shapes
+let canvasX = 0;
+let canvasY = 0;
+
+shouldFlip = false;
+
+// how many segments needed, in this case 6;
+const its = 6;
+// how many hexes to draw;
+const turns = hexHeight + 1;
+// counts the number of segments used
+let count = 0;
+
+function preload() {
+  triangle = loadImage('../images/triangle_small.png');
+
+}
+
+function setup() {
+  s = triangle.width;
+  h = triangle.height;
+  canvasLength = hexLength * (s * 1.5);
+  canvasHeight = hexHeight * h;
+  canvasX = s;
+  canvasY = 0;
+  createCanvas(canvasLength, canvasHeight);
+  // imageMode(CENTER);
+  // angleMode(DEGREES);
+  noLoop();
+}
+
+function drawTriangle(num, x, y, rads) {
+  // move to starting coordinates
+  translate(x, y);
+  rotate(rads)
+  if (shouldFlip === true) {
+    scale(-1, 1);
+    image(triangle, 0, 0)
+    scale(-1, 1);
+  } else {
+    image(triangle, 0, 0)
+  }
+  // reset transformations (reverse order in which they were added)
+  rotate(-rads)
+  translate(-x, -y);
+  }
+
+
+function drawHex() {
+  const angle = PI / 3;
+  let rotation = angle;
+
+  while (count < its) {
+    rotation = angle * count;
+    drawTriangle(count, canvasX, canvasY, rotation)
+    shouldFlip = !shouldFlip;
+    count +=1;
+    // console.log(`just drew triangle at: ${count -1} with rotation: ${rotation}`);
+  }
+  // TODO: on button press:
+  // saveCanvas('myCanvas', 'png');
+}
+
+function drawHexRow(i, offset) {
+  console.log('drawing hex row: ' + i, offset)
+  for (let i = 0; i <= hexLength; i += 1) {
+    if ( i % 2 === 0) {
+      drawHex();
+    }
+    canvasX += (s * 1.5);
+    // canvasY += triangle.height;
+    count = 0;
+    console.log(canvasX);
+  }
+}
+
+function drawHexes() {
+  let addOffset = true;
+  let offset = 0;
+  for (let i = 0; i < hexHeight + 1; i += 1) {
+    drawHexRow(i, offset)
+    if (addOffset == true) {
+      offset = s/2;
+    } else {
+      offset = -s;
+    }
+    canvasX = 0 - offset;
+    canvasY += h;
+    addOffset = !addOffset;
+  }
+}
+
+function mousePressed() {
+  // // TODO: on button press:
+  // saveCanvas('myCanvas', 'png');
+}
+
+function draw() {
+  background(230);
+  drawHexes();
+}
+*/
 </script>
+
+<style lang="scss">
+.canvas {
+    border: 2px solid blue;
+}
+
+.image-holder {
+    width: 400px;
+    background: #ffd9d9;
+    height: 400px;
+    display: none;
+}
+</style>
+

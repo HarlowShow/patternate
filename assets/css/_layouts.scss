@@ -1,7 +1,9 @@
 // the outermost container, should handle basic stuff like width, viewport, media queries
 .outer-wrapper {
-    @extend .m-lg, .flex-center;
+    @extend .m-lg;
     background: $surface-white;
+    min-width: 800px;
+    min-height: 800px;
 }
 
 // inner wrapper, for padding etc.
