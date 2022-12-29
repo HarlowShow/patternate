@@ -11,9 +11,6 @@ export const useConfigStore = defineStore('config', () => {
         height: 200,
     })
 
-    const canvasWidth = computed(() => canvasDimensions.value.width * imageDimensions.value.width)
-    const canvasHeight = computed(() => canvasDimensions.value.height * imageDimensions.value.height)
-
     const updateImageDimensions = ((width: number | SVGAnimatedLength, height: number | SVGAnimatedLength) => {
         if (typeof width !== 'number' || typeof height !== 'number') {
             console.error('non number dimensions are not supported')
@@ -24,13 +21,17 @@ export const useConfigStore = defineStore('config', () => {
         }
     })
 
-    const updateCanvasWidth = ((width: number) => canvasDimensions.value.width = width)
-    const updateCanvasHeight = ((height: number) => canvasDimensions.value.height = height)
+    const updateCanvasWidth = (async (width: number) => {
+        canvasDimensions.value.width = width;
+        await nextTick()
+    })
+    const updateCanvasHeight = (async (height: number) => {
+        canvasDimensions.value.height = height;
+        await nextTick()
+    })
 
     return {
         canvasDimensions,
-        canvasWidth,
-        canvasHeight,
         imageDimensions,
         updateCanvasWidth,
         updateCanvasHeight,

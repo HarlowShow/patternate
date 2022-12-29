@@ -6,7 +6,7 @@
     <div>
         {{  width  }} {{  height }}
     </div>
-    <canvas ref="canvas" class="canvas" height="400" width="400">
+    <canvas ref="canvas" class="canvas" :width="canvasWidth" :height="canvasHeight">
     </canvas>
 </template>
 
@@ -15,10 +15,13 @@ import { ref, Ref } from 'vue';
 import { maybeNull } from '~~/models/models';
 import { useConfigStore } from '~~/stores/config';
 
-const { canvasDimensions, updateImageDimensions } = useConfigStore()
+const { canvasDimensions, updateImageDimensions, imageDimensions } = useConfigStore()
 const width = computed(() => canvasDimensions.width)
 const height = computed(() => canvasDimensions.height)
+const canvasWidth = computed(() => canvasDimensions.width * imageDimensions.width)
+const canvasHeight = computed(() => canvasDimensions.height * imageDimensions.height)
 
+// TODO: clean this up so it doesn't throw error later on
 function nullCheck<T>(element: T | null | undefined): maybeNull<T> {
     if (element !== null && element !== undefined) {
         return { kind: 'success', value: element }
@@ -44,28 +47,13 @@ const drawImage = (async () => {
     }
 })
 
+const drawImageSet = (() => {
+
+});
+
 onMounted(() => {
 drawImage();
 })
-
-
-// const drawImage = (() => {
-//     const image = new Image()
-//     image.addEventListener(
-//         "load",
-//         () => {
-//             if (ctx !== null && ctx !== undefined) {
-//                 console.log('drawing image')
-//                 ctx.drawImage(image, 50, 50);
-//             } else {
-//                 console.error('ctx null or undefined')
-//             }
-//         },
-//         false
-//         );
-//         image.src = '../assets/demo/christmas_small.png'
-// })
-
 
 
     
