@@ -2,7 +2,7 @@
     <div class="image-holder">
         <img ref="image" class="image" src="~/assets/christmas_small.png"/>
     </div>
-    <button @click="drawImage()">Draw!</button>
+    <button @click="startDrawing()">Draw!</button>
     <div>
         {{  width  }} {{  height }}
     </div>
@@ -16,6 +16,14 @@ import { maybeNull } from '~~/models/models';
 import { useConfigStore } from '~~/stores/config';
 
 const { canvasDimensions, updateImageDimensions, imageDimensions } = useConfigStore()
+// how many segments needed for an image set, in this case 6 for a hex;
+const its = 6;
+// counter for each turn
+let count = 0;
+// running coordinates for drawing the shapes
+let canvasX = 0;
+let canvasY = 0;
+let shouldFlip = false;
 const width = computed(() => canvasDimensions.width)
 const height = computed(() => canvasDimensions.height)
 const canvasWidth = computed(() => canvasDimensions.width * imageDimensions.width)
@@ -29,30 +37,66 @@ function nullCheck<T>(element: T | null | undefined): maybeNull<T> {
     return { kind: 'failure', reason: 'element is null' }
 }
 
-const canvas = ref<HTMLCanvasElement>()
+const canvas: Ref <HTMLCanvasElement | null > = ref(null);
 const ctx: Ref <CanvasRenderingContext2D | null > = ref(null);
+const image: Ref <HTMLImageElement | null > = ref(null);
+    
+    const startDrawing = (async () => {
+        const canvasCheck = nullCheck<HTMLCanvasElement>(canvas.value);
+            if (canvasCheck.kind === 'success' && canvas.value !== null) {
+                // TODO: look into this mysterious error message
+                ctx.value = canvas.value.getContext('2d') as CanvasRenderingContext2D;
+            } else {
+                console.error('CANVAS: is not null check passed but something else went wrong')
+            }
+        console.log('start Drawing')
+        const image = document.getElementsByClassName('image')[0] as CanvasImageSource;
+        await nextTick()
+        updateImageDimensions(image.width, image.height)    
+        drawImageSet(image)
+});
 
-const drawImage = (async () => {
-    console.log('on Mounted')
-    const canvasCheck = nullCheck<HTMLCanvasElement>(canvas.value);
-    if (canvasCheck.kind === 'success') {
-    ctx.value = canvas.value.getContext('2d') as CanvasRenderingContext2D;
-    console.log(ctx.value);
-    const image = document.getElementsByClassName('image')[0] as CanvasImageSource;
-    await nextTick()
-    updateImageDimensions(image.width, image.height)
-    ctx.value.drawImage(image as CanvasImageSource, 0, 0);
+const drawImage = ((image: CanvasImageSource, x: number, y: number, rotation: number) => {
+    const ctxCheck = nullCheck<CanvasRenderingContext2D>(ctx.value);
+    if (ctxCheck.kind === 'success' && ctx.value !== null) {
+        // ctx.value.translate(x, y);
+        ctx.value.drawImage(image, 0, 0);
+
+       /*  translate(x, y);
+        rotate(rads)
+        if (shouldFlip === true) {
+            scale(-1, 1);
+            image(triangle, 0, 0)
+            scale(-1, 1);
+        } else {
+            image(triangle, 0, 0)
+        }
+        // reset transformations (reverse order in which they were added)
+        rotate(-rads)
+        translate(-x, -y);
+    */
     } else {
-        console.error(canvasCheck.reason);
+        console.error('CTX: is not null check passed but something else went wrong')
     }
-})
+});
 
-const drawImageSet = (() => {
+const drawImageSet = ((image: CanvasImageSource) => {
+    const angle = Math.PI / 3;
+    let rotation = angle;
 
+  while (count < its) {
+    rotation = angle * count;
+    drawImage(image, canvasX, canvasY, rotation)
+
+    shouldFlip = !shouldFlip;
+    count +=1;
+  }
+
+    // aka drawHex
 });
 
 onMounted(() => {
-drawImage();
+    console.log('on mounted');
 })
 
 
