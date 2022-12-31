@@ -3,6 +3,7 @@
         <img ref="image" class="image" src="~/assets/christmas_small.png"/>
     </div>
     <button @click="startDrawing()">Draw!</button>
+    <button @click="resetCanvas()">Clear canvas!</button>
     <div>
         {{  width  }} {{  height }}
     </div>
@@ -30,37 +31,32 @@ const canvasWidth = computed(() => canvasDimensions.width * imageDimensions.widt
 const canvasHeight = computed(() => canvasDimensions.height * imageDimensions.height)
 
 // TODO: clean this up so it doesn't throw error later on
-function nullCheck<T>(element: T | null | undefined): maybeNull<T> {
-    if (element !== null && element !== undefined) {
-        return { kind: 'success', value: element }
+function nullCheck<T>(element: Ref<T | null>): maybeNull<T> {
+    if (element.value !== null && element !== undefined) {
+        return { kind: 'success', value: element.value }
     }
     return { kind: 'failure', reason: 'element is null' }
 }
 
 const canvas: Ref <HTMLCanvasElement | null > = ref(null);
 const ctx: Ref <CanvasRenderingContext2D | null > = ref(null);
-const image: Ref <HTMLImageElement | null > = ref(null);
+const image = ref();
+
+const resetCanvas = (() => {
+    ctx.value.clearRect(0, 0, canvas.value.width, canvas.value.height)
+})
     
     const startDrawing = (async () => {
-        const canvasCheck = nullCheck<HTMLCanvasElement>(canvas.value);
-            if (canvasCheck.kind === 'success' && canvas.value !== null) {
-                // TODO: look into this mysterious error message
-                ctx.value = canvas.value.getContext('2d') as CanvasRenderingContext2D;
-            } else {
-                console.error('CANVAS: is not null check passed but something else went wrong')
-            }
-        console.log('start Drawing')
-        const image = document.getElementsByClassName('image')[0] as CanvasImageSource;
-        await nextTick()
-        updateImageDimensions(image.width, image.height)    
-        drawImageSet(image)
+        drawImage()
 });
 
-const drawImage = ((image: CanvasImageSource, x: number, y: number, rotation: number) => {
-    const ctxCheck = nullCheck<CanvasRenderingContext2D>(ctx.value);
+const drawImage = (async (x: number, y: number, rotation: number) => {
+    const ctxCheck = nullCheck<CanvasRenderingContext2D>(ctx);
     if (ctxCheck.kind === 'success' && ctx.value !== null) {
         // ctx.value.translate(x, y);
-        ctx.value.drawImage(image, 0, 0);
+        console.log('drawing part reached, image value is: ' + image.value)
+        ctx.value.drawImage(image.value, 0, 0);
+        await nextTick()
 
        /*  translate(x, y);
         rotate(rads)
@@ -80,13 +76,13 @@ const drawImage = ((image: CanvasImageSource, x: number, y: number, rotation: nu
     }
 });
 
-const drawImageSet = ((image: CanvasImageSource) => {
+const drawImageSet = (() => {
     const angle = Math.PI / 3;
     let rotation = angle;
 
   while (count < its) {
     rotation = angle * count;
-    drawImage(image, canvasX, canvasY, rotation)
+    drawImage(canvasX, canvasY, rotation)
 
     shouldFlip = !shouldFlip;
     count +=1;
@@ -95,8 +91,24 @@ const drawImageSet = ((image: CanvasImageSource) => {
     // aka drawHex
 });
 
-onMounted(() => {
-    console.log('on mounted');
+onMounted(async() => {
+    image.value = document.getElementsByClassName('image')[0];
+    console.log('on mounted' + image.value);
+    const canvasCheck = nullCheck<HTMLCanvasElement>(canvas);
+            if (canvasCheck.kind === 'success') {
+                // TODO: look into this mysterious error message
+                ctx.value = canvasCheck.value.getContext('2d') as CanvasRenderingContext2D;
+            } else {
+                console.error('CANVAS: is not null check passed but something else went wrong')
+            }
+        console.log('start Drawing')
+        await nextTick()
+        if (image.value instanceof HTMLImageElement) {
+            updateImageDimensions(image.value.width, image.value.height)    
+            drawImageSet()
+        } else {
+                console.error('IMAGE: error loading image')
+            }
 })
 
 
