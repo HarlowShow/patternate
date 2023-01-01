@@ -1,6 +1,6 @@
 <template>
     <div class="image-holder">
-        <img ref="image" class="image" src="~/assets/christmas_small.png"/>
+        <img ref="image" class="image" src="~/assets/patternate_demo.png"/>
     </div>
     <button @click="startDrawing()">Draw!</button>
     <button @click="resetCanvas()">Clear canvas!</button>
@@ -22,8 +22,8 @@ const its = 6;
 // counter for each turn
 let count = 0;
 // running coordinates for drawing the shapes
-let canvasX = 0;
-let canvasY = 0;
+let canvasX = 500;
+let canvasY = 500;
 let shouldFlip = false;
 const width = computed(() => canvasDimensions.width)
 const height = computed(() => canvasDimensions.height)
@@ -44,18 +44,29 @@ const image = ref();
 
 const resetCanvas = (() => {
     ctx.value.clearRect(0, 0, canvas.value.width, canvas.value.height)
+    count = 0;
+    canvasX = canvas.value.width / 2;
+    canvasY = canvas.value.height / 2;
+
 })
-    
-    const startDrawing = (async () => {
-        drawImage()
-});
 
 const drawImage = (async (x: number, y: number, rotation: number) => {
     const ctxCheck = nullCheck<CanvasRenderingContext2D>(ctx);
     if (ctxCheck.kind === 'success' && ctx.value !== null) {
-        // ctx.value.translate(x, y);
-        console.log('drawing part reached, image value is: ' + image.value)
+        ctx.value.translate(x, y);
+        // ctx.value.translate(imageDimensions.width/2, 0);
+        ctx.value.rotate(rotation);
+    
+    if (shouldFlip === true) {
+        ctx.value.scale(1, -1);
         ctx.value.drawImage(image.value, 0, 0);
+        ctx.value.scale(1, -1);
+    } else {
+        ctx.value.drawImage(image.value, 0, 0);
+    } 
+        ctx.value.rotate(-rotation);
+        // ctx.value.translate(-imageDimensions.width/2, -0);
+        ctx.value.translate(-x, -y);
         await nextTick()
 
        /*  translate(x, y);
@@ -76,6 +87,7 @@ const drawImage = (async (x: number, y: number, rotation: number) => {
     }
 });
 
+// NOT IN USE, use DRAWIMAGESETTEST atm
 const drawImageSet = (() => {
     const angle = Math.PI / 3;
     let rotation = angle;
@@ -89,6 +101,29 @@ const drawImageSet = (() => {
   }
 
     // aka drawHex
+});
+
+const drawImageSetTest = (() => {
+    const angle = Math.PI / 3;
+    let rotation = angle;
+    console.log('count is: ' + count)
+    console.log('its is : ' + its)
+
+  while (count < its) {
+    rotation = angle * count;
+    drawImage(canvasX, canvasY, rotation)
+
+    shouldFlip = !shouldFlip;
+    count +=1;
+  }
+
+    // aka drawHex
+});
+
+const startDrawing = (async () => {
+        // TEST
+        
+        drawImageSetTest()
 });
 
 onMounted(async() => {
