@@ -22,13 +22,13 @@ const its = 6;
 // counter for each turn
 let count = 0;
 // running coordinates for drawing the shapes
-let canvasX = 500;
-let canvasY = 500;
 let shouldFlip = false;
 const width = computed(() => canvasDimensions.width)
 const height = computed(() => canvasDimensions.height)
 const canvasWidth = computed(() => canvasDimensions.width * imageDimensions.width)
 const canvasHeight = computed(() => canvasDimensions.height * imageDimensions.height)
+let canvasX = -imageDimensions.width;
+let canvasY = 0;
 
 // TODO: clean this up so it doesn't throw error later on
 function nullCheck<T>(element: Ref<T | null>): maybeNull<T> {
@@ -45,8 +45,8 @@ const image = ref();
 const resetCanvas = (() => {
     ctx.value.clearRect(0, 0, canvas.value.width, canvas.value.height)
     count = 0;
-    canvasX = canvas.value.width / 2;
-    canvasY = canvas.value.height / 2;
+    canvasX = -imageDimensions.width;
+    canvasY = 0;
 
 })
 
@@ -120,10 +120,38 @@ const drawImageSetTest = (() => {
     // aka drawHex
 });
 
+
+function drawImageSetRow(num: number, offset: number) {
+  console.log('drawing hex row: ' + num, offset)
+  for (let i = 0; i <= canvasDimensions.width + 1; i += 1) {
+    if ( i % 2 === 0) {
+      drawImageSetTest();
+    }
+    canvasX += (imageDimensions.width);
+    // canvasY += triangle.height;
+    count = 0;
+    console.log(canvasX);
+  }
+}
+
 const startDrawing = (async () => {
         // TEST
+        let addOffset = true;
+  let offset = 0;
+  const s = imageDimensions.width;
+  const h = imageDimensions.height;
+  for (let i = 0; i < canvasDimensions.height + 1; i += 1) {
+    drawImageSetRow(i, offset)
+    if (addOffset === true) {
+      offset = 0;
+    } else {
+      offset = -s;
+    }
+    canvasX = 0 - offset;
+    canvasY += h * 1.5;
+    addOffset = !addOffset;
+}
         
-        drawImageSetTest()
 });
 
 onMounted(async() => {
