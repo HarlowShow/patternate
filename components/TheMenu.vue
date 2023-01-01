@@ -2,15 +2,16 @@
     <div class="menu flex-column">
         <h6 class="menu-item lh-spaced fw-medium">Logo Here</h6>
         <div class="toggle menu-item flex">
-          <button>Guide Mode</button>
-          <button>Art Mode</button>
+          <button @click="updateMode('guide')">Guide Mode</button>
+          <button @click="updateMode('draw')">Art Mode</button>
+          <p>current mode: {{ currentMode }}</p>
         </div>
         <div class="menu-item">
           <h6 class="lh-spaced fw-medium">Patterns</h6>
           <button>hex triangles</button>
         </div>
-        <div class="menu-item flex-column">
-          <h6 class="lh-spaced fw-medium">Settings</h6>
+        <div class="menu-item flex-column" v-if="currentMode.value === 'draw'">
+          <h6 class="lh-spaced fw-medium">Draw Settings</h6>
           <div class="inline-input">
             <label for="width">Width (hexes):</label>
             <input v-model.number="chosenWidth" 
@@ -24,19 +25,43 @@
             name="height">
           </div>
         </div>
+        <div class="menu-item flex-column" v-else>
+          <h6 class="lh-spaced fw-medium">Guide Settings</h6>
+          <div class="inline-input">
+            <label for="width">Width (px):</label>
+            <input v-model.number="chosenWidth" 
+            @change="updateCanvasWidth(chosenWidth)"
+            name="width">
+          </div>
+          <div class="inline-input">
+            <label for="height">Height (px):</label>
+            <input v-model.number="chosenHeight" 
+            @change="updateCanvasHeight(chosenHeight)"
+            name="height">
+          </div>
+        </div>
     </div>
   </template>
 <script setup lang="ts">
+import { storeToRefs } from 'pinia';
 import { useConfigStore } from '~~/stores/config';
 
 const { 
   // canvasDimensions, 
   updateCanvasWidth, 
-  updateCanvasHeight 
+  updateCanvasHeight,
+  updateMode,
 } = useConfigStore()
+
+const store = useConfigStore()
+const { mode } = storeToRefs(store);
+
 
 // const width = computed(() => canvasDimensions.width)
 // const height = computed(() => canvasDimensions.height)
+const currentMode = computed(() => mode)
+console.log('mode is: ' + mode)
+console.log('current mode is: ' + currentMode)
 const chosenWidth = 0;
 const chosenHeight = 0;
 </script>

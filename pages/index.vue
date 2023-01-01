@@ -5,17 +5,25 @@
       <TheMenu />
       </template>
       <div class="outer-wrapper main">
-          <ACanvas />
+        <div v-if="chosenMode.value==='draw'">
+          <DrawingCanvas />
+        </div>
+        <div v-else>
+          <GuideCanvas />
+        </div>
       </div>
     </NuxtLayout>
     </div>
 </template>
 <script setup lang="ts">
-// import { useCounter } from '../stores/counter'
+import { useConfigStore } from '~~/stores/config';
+import { storeToRefs } from 'pinia';
 definePageMeta({
   layout: 'default'
 })
-// const counter = useCounter()
+const store = useConfigStore()
+const { mode } = storeToRefs(store);
+const chosenMode = computed(() => mode )
 </script>
 
 <style lang="scss">

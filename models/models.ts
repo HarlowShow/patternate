@@ -10,3 +10,4 @@ export type isNull = {
 
 export type maybeNull<T> = isNotNull<T> | isNull;
 
+export type Mode = 'draw' | 'guide'
