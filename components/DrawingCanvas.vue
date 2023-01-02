@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
 import { ref, Ref } from 'vue';
-import { maybeNull } from '~~/models/models';
+import { nullCheck } from '~~/models/models';
 import { useConfigStore } from '~~/stores/config';
 
 const { canvasDimensions, updateImageDimensions, imageDimensions } = useConfigStore()
@@ -29,14 +29,6 @@ const canvasWidth = computed(() => canvasDimensions.width * imageDimensions.widt
 const canvasHeight = computed(() => canvasDimensions.height * imageDimensions.height)
 let canvasX = -imageDimensions.width;
 let canvasY = 0;
-
-// TODO: clean this up so it doesn't throw error later on
-function nullCheck<T>(element: Ref<T | null>): maybeNull<T> {
-    if (element.value !== null && element !== undefined) {
-        return { kind: 'success', value: element.value }
-    }
-    return { kind: 'failure', reason: 'element is null' }
-}
 
 const canvas: Ref <HTMLCanvasElement | null > = ref(null);
 const ctx: Ref <CanvasRenderingContext2D | null > = ref(null);
