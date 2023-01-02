@@ -13,6 +13,7 @@ import { Ref } from 'vue'
 import { storeToRefs } from 'pinia';
 import { nullCheck } from '~~/models/models';
 import { useConfigStore } from '~~/stores/config';
+import { useTriangle } from '~~/composables/triangle';
 const store = useConfigStore()
 const { guideDimensions } = storeToRefs(store);
 
@@ -39,11 +40,12 @@ const ctx: Ref <CanvasRenderingContext2D | null > = ref(null);
 const generateTriangle = (() => {
     const ctxCheck = nullCheck<CanvasRenderingContext2D>(ctx);
     if (ctxCheck.kind === 'success' && ctx.value !== null) {
-        const baseY = guideCanvasHeight.value - hOffset.value; 
+        const [coordsOne, coordsTwo, coordsThree] = useTriangle(guideCanvasHeight.value, guideCanvasWidth.value, hOffset.value, wOffset.value)
+
         ctx.value.beginPath();
-        ctx.value.moveTo(wOffset.value, baseY);
-        ctx.value.lineTo(guideCanvasWidth.value - wOffset.value, baseY);
-        ctx.value.lineTo(guideCanvasWidth.value / 2, hOffset.value);
+        ctx.value.moveTo(coordsOne.x, coordsOne.y);
+        ctx.value.lineTo(coordsTwo.x, coordsTwo.y);
+        ctx.value.lineTo(coordsThree.x, coordsThree.y);
         ctx.value.closePath();
         ctx.value.stroke();
 
