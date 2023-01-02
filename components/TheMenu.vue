@@ -29,15 +29,15 @@
           <h6 class="lh-spaced fw-medium">Guide Settings</h6>
           <div class="inline-input">
             <label for="width">Width (px):</label>
-            <input v-model.number="chosenWidth" 
-            @change="updateCanvasWidth(chosenWidth)"
+            <input v-model.number="guideDimensions.width" 
             name="width">
+            <button @click="updateGuideDimensions('width', guideDimensions.width)">Update</button>
           </div>
           <div class="inline-input">
             <label for="height">Height (px):</label>
-            <input v-model.number="chosenHeight" 
-            @change="updateCanvasHeight(chosenHeight)"
+            <input v-model.number="guideDimensions.height" 
             name="height">
+            <button @click="updateGuideDimensions('height', guideDimensions.height)">Update</button>
           </div>
         </div>
     </div>
@@ -51,10 +51,12 @@ const {
   updateCanvasWidth, 
   updateCanvasHeight,
   updateMode,
+  updateGuideDimensions,
 } = useConfigStore()
 
 const store = useConfigStore()
 const { mode } = storeToRefs(store);
+const { guideDimensions } = storeToRefs(store);
 
 
 // const width = computed(() => canvasDimensions.width)
@@ -64,6 +66,8 @@ console.log('mode is: ' + mode)
 console.log('current mode is: ' + currentMode)
 const chosenWidth = 0;
 const chosenHeight = 0;
+const guideWidth = 0;
+const guideHeight = 0;
 </script>
 
 <style lang="scss">

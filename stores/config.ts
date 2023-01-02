@@ -17,9 +17,9 @@ export const useConfigStore = defineStore('config', () => {
         height: 200,
     })
 
-    const guideImageDimensions = ref({
-        width: 300,
-        height: 400,
+    const guideDimensions = ref({
+        width: 400,
+        height: 300,
     })
 
     const updateMode = (async(opt: Mode) => {
@@ -37,14 +37,13 @@ export const useConfigStore = defineStore('config', () => {
         }
     })
 
-    const updateGuideImageDimensions = ((toChange: 'width' | 'height', x: number) => {
+    const updateGuideDimensions = ((toChange: 'width' | 'height', x: number) => {
         if (toChange === 'width') { 
-            guideImageDimensions.value.width = x;
-            // TODO calc goes here
-            guideImageDimensions.value.height = x * 1;
+            guideDimensions.value.width = x;
+            guideDimensions.value.height = x * 0.75;
         } else if (toChange === 'height') {
-            guideImageDimensions.value.height = x;
-            // TODO calc goes here
+            guideDimensions.value.height = x;
+            guideDimensions.value.width = (x / 3) * 4;
         }
     })
 
@@ -64,6 +63,8 @@ export const useConfigStore = defineStore('config', () => {
         updateCanvasWidth,
         updateCanvasHeight,
         updateImageDimensions,
+        updateGuideDimensions,
+        guideDimensions,
         updateMode,
         mode,
     }
