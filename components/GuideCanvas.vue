@@ -20,6 +20,9 @@ const { guideDimensions } = storeToRefs(store);
 const guideCanvasHeight = computed(() => guideDimensions.value.height + (guideDimensions.value.height / 10))
 const guideCanvasWidth = computed(() => guideDimensions.value.width + (guideDimensions.value.width / 10))
 
+// const guideCanvasHeight = computed(() => refCanvasHeight.value + 10)
+// const guideCanvasWidth = computed(() => refCanvasWidth.value + 10)
+
 const hOffset = computed(() => (guideDimensions.value.height / 10) / 2);
 const wOffset = computed(() => (guideDimensions.value.width / 10) / 2);
 
@@ -40,8 +43,10 @@ const ctx: Ref <CanvasRenderingContext2D | null > = ref(null);
 const generateTriangle = (() => {
     const ctxCheck = nullCheck<CanvasRenderingContext2D>(ctx);
     if (ctxCheck.kind === 'success' && ctx.value !== null) {
-        const [coordsOne, coordsTwo, coordsThree] = useTriangle(guideCanvasHeight.value, guideCanvasWidth.value, hOffset.value, wOffset.value)
+        const [coordsOne, coordsTwo, coordsThree] = useTriangle(guideCanvasHeight.value, guideCanvasWidth.value)
 
+        ctx.value.lineWidth = 5;
+        ctx.value.strokeStyle = '#e1e1e1';
         ctx.value.beginPath();
         ctx.value.moveTo(coordsOne.x, coordsOne.y);
         ctx.value.lineTo(coordsTwo.x, coordsTwo.y);
@@ -50,12 +55,12 @@ const generateTriangle = (() => {
         ctx.value.stroke();
 
         // TODO: refactor so it's an accurate outline and not just hodgepodge
-        ctx.value.beginPath();
-        ctx.value.moveTo(0, guideCanvasHeight.value - hOffset.value * 0.4);
-        ctx.value.lineTo(guideCanvasWidth.value, guideCanvasHeight.value - hOffset.value * 0.4);
-        ctx.value.lineTo(guideCanvasWidth.value / 2, 0);
-        ctx.value.closePath();
-        ctx.value.stroke();
+        // ctx.value.beginPath();
+        // ctx.value.moveTo(0, refCanvasHeight.value);
+        // ctx.value.lineTo(refCanvasWidth.value, refCanvasHeight.value);
+        // ctx.value.lineTo(refCanvasWidth.value / 2, 0);
+        // ctx.value.closePath();
+        // ctx.value.stroke();
         // ctx.value.fill();
     } else {
         console.error('GUIDE CTX: null check failed')

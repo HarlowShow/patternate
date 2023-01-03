@@ -18,8 +18,8 @@ export const useConfigStore = defineStore('config', () => {
     })
 
     const guideDimensions = ref({
-        width: 400,
-        height: 300,
+        width: 600,
+        height: 750,
     })
 
     const updateMode = (async(opt: Mode) => {
@@ -40,7 +40,7 @@ export const useConfigStore = defineStore('config', () => {
     const updateGuideDimensions = ((toChange: 'width' | 'height', x: number) => {
         if (toChange === 'width') { 
             guideDimensions.value.width = x;
-            guideDimensions.value.height = x * 0.75;
+            guideDimensions.value.height = (Math.sqrt(3)/2) * x
         } else if (toChange === 'height') {
             guideDimensions.value.height = x;
             guideDimensions.value.width = (x / 3) * 4;
