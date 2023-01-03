@@ -1,42 +1,33 @@
-# Nuxt 3 Minimal Starter
+# Patternate
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Generate tesselated patterns from hand-drawn images.
 
-## Setup
+## Demo
 
-Make sure to install the dependencies:
+It currently works with one pattern which uses an equilateral triangle to generate an image of tessalating hexagons
 
-```bash
-# yarn
-yarn install
+Input image: <br />
+<img src="assets/patternate_demo.png" alt="demo input image" />
 
-# npm
-npm install
+Generated Pattern: <br />
+<img src="assets/demo_output.png" alt="demo output image" />
 
-# pnpm
-pnpm install --shamefully-hoist
+## Usage
+- clone the repo
+- add your input in place of the demo image is:
 ```
-
-## Development Server
-
-Start the development server on http://localhost:3000
-
-```bash
-npm run dev
+// DrawingCanvas.vue
+    <div class="image-holder">
+        <img ref="image" class="image" src="~/assets/patternate_demo.png"/>
+    </div>
 ```
+- use the inputs on the menu to specify the height and width of your pattern, then click 'save canvas'
 
-## Production
+## Coming Soon
 
-Build the application for production:
+- improved interface
+- more patterns
 
-```bash
-npm run build
-```
+## Contributions
 
-Locally preview production build:
-
-```bash
-npm run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+Contributions welcome!
