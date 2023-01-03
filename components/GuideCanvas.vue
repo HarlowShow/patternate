@@ -14,6 +14,7 @@ import { storeToRefs } from 'pinia';
 import { nullCheck } from '~~/models/models';
 import { useConfigStore } from '~~/stores/config';
 import { useTriangle } from '~~/composables/triangle';
+import { useSave } from '~~/composables/save';
 const store = useConfigStore()
 const { guideDimensions } = storeToRefs(store);
 
@@ -70,10 +71,12 @@ const generateTriangle = (() => {
 const saveGuide = (() => {
     if (guideCanvas.value !== null) {
         const dataURL = guideCanvas.value.toDataURL();
-        const link = document.createElement('a');
-        link.download = 'download.png';
-        link.href = dataURL
-        link.click();
+        useSave('guidetri', dataURL)
+        // const link = document.createElement('a');
+        // link.download = 'download.png';
+        // link.href = dataURL
+        // link.click();
+        // TODO remove link after
     } else {
         console.error('GUIDE CANVAS: null check failed on attempted save')
     }

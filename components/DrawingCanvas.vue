@@ -4,6 +4,7 @@
     </div>
     <button @click="startDrawing()">Draw!</button>
     <button @click="resetCanvas()">Clear canvas!</button>
+    <button @click="saveCanvas()">Save canvas!</button>
     <div>
         {{  width  }} {{  height }}
     </div>
@@ -14,6 +15,8 @@
 <script setup lang="ts">
 import { ref, Ref } from 'vue';
 import { nullCheck } from '~~/models/models';
+import { useTriangle } from '~~/composables/triangle';
+import { useSave } from '~~/composables/save';
 import { useConfigStore } from '~~/stores/config';
 
 const { canvasDimensions, updateImageDimensions, imageDimensions } = useConfigStore()
@@ -35,26 +38,56 @@ const ctx: Ref <CanvasRenderingContext2D | null > = ref(null);
 const image = ref();
 
 const resetCanvas = (() => {
-    ctx.value.clearRect(0, 0, canvas.value.width, canvas.value.height)
+    updateImageDimensions(image.value.width, image.value.height);
+    ctx.value.clearRect(0, 0, canvas.value.width, canvas.value.height);
     count = 0;
     canvasX = -imageDimensions.width;
     canvasY = 0;
 
 })
 
+const saveCanvas = (() => {
+  if (canvas.value !== null) {
+    const dataURL = canvas.value.toDataURL();
+          useSave('newdrawing', dataURL) 
+  }
+})
+
 const drawImage = (async (x: number, y: number, rotation: number) => {
     const ctxCheck = nullCheck<CanvasRenderingContext2D>(ctx);
     if (ctxCheck.kind === 'success' && ctx.value !== null) {
+        // clip the edges of the image:
+        const [coordsOne, coordsTwo, coordsThree] = useTriangle(imageDimensions.height, imageDimensions.width)
+
         ctx.value.translate(x, y);
         // ctx.value.translate(imageDimensions.width/2, 0);
         ctx.value.rotate(rotation);
     
     if (shouldFlip === true) {
         ctx.value.scale(1, -1);
+      
+
+        // ctx.value.save();
+        // ctx.value.beginPath();
+        // ctx.value.moveTo(coordsOne.x, coordsOne.y);
+        // ctx.value.lineTo(coordsTwo.x, coordsTwo.y);
+        // ctx.value.lineTo(coordsThree.x, coordsThree.y);
+        // ctx.value.clip();
+
         ctx.value.drawImage(image.value, 0, 0);
+        // ctx.value.restore();
+
         ctx.value.scale(1, -1);
     } else {
+        // ctx.value.save();
+        // ctx.value.beginPath();
+        // ctx.value.moveTo(coordsOne.x, coordsOne.y);
+        // ctx.value.lineTo(coordsTwo.x, coordsTwo.y);
+        // ctx.value.lineTo(coordsThree.x, coordsThree.y);
+        // ctx.value.clip();
+
         ctx.value.drawImage(image.value, 0, 0);
+        // ctx.value.restore();
     } 
         ctx.value.rotate(-rotation);
         // ctx.value.translate(-imageDimensions.width/2, -0);
@@ -164,6 +197,7 @@ onMounted(async() => {
         } else {
                 console.error('IMAGE: error loading image')
             }
+        resetCanvas();
 })
 
 

@@ -43,7 +43,8 @@ export const useConfigStore = defineStore('config', () => {
             guideDimensions.value.height = (Math.sqrt(3)/2) * x
         } else if (toChange === 'height') {
             guideDimensions.value.height = x;
-            guideDimensions.value.width = (x / 3) * 4;
+            // TODO: use formula, temp solution only
+            guideDimensions.value.width = x * 1.154701;
         }
     })
 

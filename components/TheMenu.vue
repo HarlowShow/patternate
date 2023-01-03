@@ -4,7 +4,6 @@
         <div class="toggle menu-item flex">
           <button @click="updateMode('guide')">Guide Mode</button>
           <button @click="updateMode('draw')">Art Mode</button>
-          <p>current mode: {{ currentMode }}</p>
         </div>
         <div class="menu-item">
           <h6 class="lh-spaced fw-medium">Patterns</h6>
