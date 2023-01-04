@@ -1,14 +1,14 @@
 <template>
     <div class="menu flex-column">
-        <h6 class="menu-item lh-spaced fw-medium">Logo Here</h6>
+        <h5 class="menu-item lh-spaced fw-medium">Patternate</h5>
         <div class="toggle menu-item flex">
-          <button @click="updateMode('guide')">Guide Mode</button>
-          <button @click="updateMode('draw')">Art Mode</button>
+          <MenuButton @click="updateMode('guide')">Guide Mode</MenuButton>
+          <MenuButton @click="updateMode('draw')">Art Mode</MenuButton>
         </div>
         <div class="btn-list menu-item" v-if="currentMode.value === 'draw'">
           <h6 class="lh-spaced fw-medium">Patterns</h6>
-          <button>Hex Triangles</button>
-          <button>Coming Soon</button>
+          <MenuButton>Hex Triangles</MenuButton>
+          <MenuButton>Coming Soon</MenuButton>
         </div>
         <div class="menu-item flex-column" v-if="currentMode.value === 'draw'">
           <h6 class="lh-spaced fw-medium">Draw Settings</h6>
@@ -31,13 +31,13 @@
             <label for="width">Width (px):</label>
             <input v-model.number="guideDimensions.width" 
             name="width">
-            <button @click="updateGuideDimensions('width', guideDimensions.width)">Update</button>
+            <MenuButton @click="updateGuideDimensions('width', guideDimensions.width)">Update</MenuButton>
           </div>
           <div class="inline-input">
             <label for="height">Height (px):</label>
             <input v-model.number="guideDimensions.height" 
             name="height">
-            <button @click="updateGuideDimensions('height', guideDimensions.height)">Update</button>
+            <MenuButton @click="updateGuideDimensions('height', guideDimensions.height)">Update</MenuButton>
           </div>
         </div>
     </div>
@@ -73,20 +73,12 @@ const guideHeight = 0;
 <style lang="scss" scoped>
 
     .menu {
-      background: rgba(0, 0, 0, 0.8);
+      background: #212121;
       min-height: 100vh;
       // min-width: 400px;
     }
 
     * :not(button, input) { color: #fefefe; }
-
-    h6 {
-      font-size: 1.5rem;
-    }
-
-    label { 
-      font-size: 1.25rem;
-    }
 
     .toggle {
       display: flex;
@@ -97,67 +89,38 @@ const guideHeight = 0;
       max-width: 50%;
     }
 
+    label {
+      font-weight: $font-weight-light;
+    }
+
     .btn-list {
       display: flex;
       flex-direction: column;
     }
-
-    button {
-    display: inline-block;
-    border: none;
-    padding: 1rem 1rem;
-    margin: 0;
-    text-decoration: none;
-    background: mediumslateblue;
-    color: #ffffff;
-    font-family: sans-serif;
-    font-size: 1rem;
-    cursor: pointer;
-    text-align: center;
-    transition: background 250ms ease-in-out, 
-                transform 150ms ease;
-    max-width: 80%;
-    // -webkit-appearance: none;
-    // -moz-appearance: none;
-}
-
-button:hover,
-button:focus, button.active {
-    background: #4A3ECC;
-}
-
-button:focus {
-    outline: 1px solid #fff;
-    outline-offset: -4px;
-}
+  
+    h5 {
+      font-size: 1rem;
+    }
 
 // tablets etc.
 @media (min-width: 800px) {
-  h6 {
-    font-size: 1.3rem;
+  h5 {
+    font-size: 1.2rem;
   }
   button, li, ul, label {
     font-size: 1rem;
   }
 }
 
-// big ass screens
+// big screens
 @media screen and (min-width: 1200px) {
-  h6 {
-    font-size: 1.5rem;
+  h5 {
+    font-size: 1.3rem;
   }
   button, li, ul, label {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
 }
-
-button:active {
-    transform: scale(0.99);
-}
-
-    button:active {
-      background-color: darkseagreen;
-    }
 
     .menu-item {
       padding: $sm;

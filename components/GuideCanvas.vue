@@ -1,9 +1,8 @@
 <template>
-    <button @click="generateTriangle()">Give Me Triangle</button>
-    <button @click="saveGuide()">Save Guide</button>
-    <div>
-        <p>necessary info goes here</p>
-    </div>
+    <InnerMenu>
+        <InnerMenuButton @click="generateTriangle()">Give Me Triangle</InnerMenuButton>
+        <InnerMenuButton @click="saveGuide()">Save Guide</InnerMenuButton>
+    </InnerMenu>
     <div class="shell">
         <canvas ref="guideCanvas" class="guideCanvas" :width="guideCanvasWidth" :height="guideCanvasHeight">
         </canvas>
@@ -84,9 +83,3 @@ const saveGuide = (() => {
     }
 })
 </script>
-
-<style lang="scss">
-.guideCanvas {
-    border: 2px solid blue;
-}
-</style>

@@ -2,12 +2,12 @@
     <div class="image-holder">
         <img ref="image" class="image" src="~/assets/patternate_demo.png"/>
     </div>
-    <button @click="startDrawing()">Draw!</button>
-    <button @click="resetCanvas()">Clear canvas!</button>
-    <button @click="saveCanvas()">Save canvas!</button>
-    <div>
-        {{  width  }} {{  height }}
-    </div>
+    <InnerMenu>
+      <InnerMenuButton @click="startDrawing()">Draw</InnerMenuButton>
+      <InnerMenuButton @click="resetCanvas()">Clear Canvas</InnerMenuButton>
+      <InnerMenuButton @click="saveCanvas()">Save Canvas</InnerMenuButton>
+    </InnerMenu>
+
     <div class="shell">
       <canvas ref="canvas" class="canvas" :width="canvasWidth" :height="canvasHeight">
       </canvas>
@@ -323,9 +323,6 @@ function draw() {
 </script>
 
 <style lang="scss">
-.canvas {
-    border: 2px solid blue;
-}
 
 .image-holder {
     width: 400px;
