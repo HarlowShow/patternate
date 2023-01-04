@@ -19,7 +19,7 @@ export const useConfigStore = defineStore('config', () => {
 
     const guideDimensions = ref({
         width: 600,
-        height: 750,
+        height: 519.61,
     })
 
     const updateMode = (async(opt: Mode) => {

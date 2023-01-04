@@ -4,8 +4,10 @@
     <div>
         <p>necessary info goes here</p>
     </div>
-    <canvas ref="guideCanvas" class="guideCanvas" :width="guideCanvasWidth" :height="guideCanvasHeight">
-    </canvas>
+    <div class="shell">
+        <canvas ref="guideCanvas" class="guideCanvas" :width="guideCanvasWidth" :height="guideCanvasHeight">
+        </canvas>
+    </div>
 </template>
 
 <script setup lang="ts">

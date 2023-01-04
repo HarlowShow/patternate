@@ -28,7 +28,7 @@ const chosenMode = computed(() => mode )
 
 <style lang="scss">
 .main {
-  width: 100vh;
+  // width: 100vh;
   padding: $sm;
 }
 </style>

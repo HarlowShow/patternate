@@ -8,8 +8,10 @@
     <div>
         {{  width  }} {{  height }}
     </div>
-    <canvas ref="canvas" class="canvas" :width="canvasWidth" :height="canvasHeight">
-    </canvas>
+    <div class="shell">
+      <canvas ref="canvas" class="canvas" :width="canvasWidth" :height="canvasHeight">
+      </canvas>
+    </div>
 </template>
 
 <script setup lang="ts">
