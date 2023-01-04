@@ -1,12 +1,12 @@
 <template>
     <div class="image-holder">
-        <img ref="image" class="image" src="~/assets/patternate_demo.png"/>
+        <img ref="image" class="image" src="~/assets/clipping_demo_two.png"/>
     </div>
-    <InnerMenu>
-      <InnerMenuButton @click="startDrawing()">Draw</InnerMenuButton>
-      <InnerMenuButton @click="resetCanvas()">Clear Canvas</InnerMenuButton>
-      <InnerMenuButton @click="saveCanvas()">Save Canvas</InnerMenuButton>
-    </InnerMenu>
+      <InnerMenu>
+        <InnerMenuButton @click="startDrawing()">Draw</InnerMenuButton>
+        <InnerMenuButton @click="resetCanvas()">Clear Canvas</InnerMenuButton>
+        <InnerMenuButton @click="saveCanvas()">Save Canvas</InnerMenuButton>
+      </InnerMenu>
 
     <div class="shell">
       <canvas ref="canvas" class="canvas" :width="canvasWidth" :height="canvasHeight">

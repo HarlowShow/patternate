@@ -1,8 +1,10 @@
 <template>
-    <button>
-        <slot></slot>
-    </button>
-    <div class="spacer"></div>
+    <div>
+        <button>
+            <slot></slot>
+        </button>
+        <div class="spacer"></div>
+    </div>
     </template>
     
     <style lang="scss" scoped>

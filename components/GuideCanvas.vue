@@ -1,10 +1,10 @@
 <template>
     <InnerMenu>
-        <InnerMenuButton @click="generateTriangle()">Give Me Triangle</InnerMenuButton>
-        <InnerMenuButton @click="saveGuide()">Save Guide</InnerMenuButton>
+            <InnerMenuButton @click="generateTriangle()">Give Me Triangle</InnerMenuButton>
+            <InnerMenuButton @click="saveGuide()">Save Guide</InnerMenuButton>
     </InnerMenu>
     <div class="shell">
-        <canvas ref="guideCanvas" class="guideCanvas" :width="guideCanvasWidth" :height="guideCanvasHeight">
+        <canvas ref="guideCanvas" class="guide-canvas" :width="guideCanvasWidth" :height="guideCanvasHeight">
         </canvas>
     </div>
 </template>
@@ -47,14 +47,16 @@ const generateTriangle = (() => {
     if (ctxCheck.kind === 'success' && ctx.value !== null) {
         const [coordsOne, coordsTwo, coordsThree] = useTriangle(guideCanvasHeight.value, guideCanvasWidth.value)
 
-        ctx.value.lineWidth = 5;
-        ctx.value.strokeStyle = '#e1e1e1';
+        // ctx.value.lineWidth = 5;
+        // ctx.value.strokeStyle = 'white';
         ctx.value.beginPath();
         ctx.value.moveTo(coordsOne.x, coordsOne.y);
         ctx.value.lineTo(coordsTwo.x, coordsTwo.y);
         ctx.value.lineTo(coordsThree.x, coordsThree.y);
         ctx.value.closePath();
-        ctx.value.stroke();
+        ctx.value.fillStyle = 'white';
+        ctx.value.fill();
+        // ctx.value.stroke();
 
         // TODO: refactor so it's an accurate outline and not just hodgepodge
         // ctx.value.beginPath();
@@ -83,3 +85,9 @@ const saveGuide = (() => {
     }
 })
 </script>
+
+<style lang="scss" scoped>
+.guide-canvas {
+    background-color: black;
+}
+</style>
