@@ -47,8 +47,8 @@ const generateTriangle = (() => {
     if (ctxCheck.kind === 'success' && ctx.value !== null) {
         const [coordsOne, coordsTwo, coordsThree] = useTriangle(guideCanvasHeight.value, guideCanvasWidth.value)
 
-        // ctx.value.lineWidth = 5;
-        // ctx.value.strokeStyle = 'white';
+        ctx.value.lineWidth = 1.5;
+        ctx.value.strokeStyle = 'white';
         ctx.value.beginPath();
         ctx.value.moveTo(coordsOne.x, coordsOne.y);
         ctx.value.lineTo(coordsTwo.x, coordsTwo.y);
@@ -56,7 +56,7 @@ const generateTriangle = (() => {
         ctx.value.closePath();
         ctx.value.fillStyle = 'white';
         ctx.value.fill();
-        // ctx.value.stroke();
+        ctx.value.stroke();
 
         // TODO: refactor so it's an accurate outline and not just hodgepodge
         // ctx.value.beginPath();

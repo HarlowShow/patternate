@@ -1,11 +1,12 @@
 <template>
     <div class="image-holder">
-        <img ref="image" class="image" src="~/assets/clipping_demo_two.png"/>
+        <img ref="image" class="image" src="~/assets/clipping_demo_three.png"/>
     </div>
       <InnerMenu>
-        <InnerMenuButton @click="startDrawing()">Draw</InnerMenuButton>
+        <InnerMenuButton @click="drawHexPattern()">Draw</InnerMenuButton>
         <InnerMenuButton @click="resetCanvas()">Clear Canvas</InnerMenuButton>
         <InnerMenuButton @click="saveCanvas()">Save Canvas</InnerMenuButton>
+        <InnerMenuButton @click="drawHexNew()">Draw Hex New</InnerMenuButton>
       </InnerMenu>
 
     <div class="shell">
@@ -16,11 +17,15 @@
 
 <script setup lang="ts">
 import { ref, Ref } from 'vue';
+import { storeToRefs } from 'pinia';
 import { nullCheck } from '~~/models/models';
-import { useTriangle } from '~~/composables/triangle';
+// import { useTriangle } from '~~/composables/triangle';
 import { useSave } from '~~/composables/save';
 import { useConfigStore } from '~~/stores/config';
+import { useHex } from '~~/composables/hex';
 
+const store = useConfigStore();
+const mode = storeToRefs(store);
 const { canvasDimensions, updateImageDimensions, imageDimensions } = useConfigStore()
 // how many segments needed for an image set, in this case 6 for a hex;
 const its = 6;
@@ -39,13 +44,27 @@ const canvas: Ref <HTMLCanvasElement | null > = ref(null);
 const ctx: Ref <CanvasRenderingContext2D | null > = ref(null);
 const image = ref();
 
+const drawHexNew = (() => {
+  const image = document.getElementsByClassName('image')[0];
+  // TBC move all null checks here, could pass in image as well(?)
+  if (canvas.value !== null && image instanceof HTMLImageElement) {
+    const { drawHexPatternNew } = useHex(canvas.value, image);
+    drawHexPatternNew();
+  } else {
+    console.error('error in drawHexNew')
+  }
+})
+
 const resetCanvas = (() => {
     updateImageDimensions(image.value.width, image.value.height);
+    if (ctx.value !== null && canvas.value !== null) { 
     ctx.value.clearRect(0, 0, canvas.value.width, canvas.value.height);
     count = 0;
     canvasX = -imageDimensions.width;
     canvasY = 0;
-
+    } else {
+      console.warn('problem in reset canvas finding ctx and/or canvas value')
+    }
 })
 
 const saveCanvas = (() => {
@@ -55,82 +74,28 @@ const saveCanvas = (() => {
   }
 })
 
-const drawImage = (async (x: number, y: number, rotation: number) => {
+const drawTriangle = (async (x: number, y: number, rotation: number) => {
     const ctxCheck = nullCheck<CanvasRenderingContext2D>(ctx);
     if (ctxCheck.kind === 'success' && ctx.value !== null) {
-        // clip the edges of the image:
-        const [coordsOne, coordsTwo, coordsThree] = useTriangle(imageDimensions.height, imageDimensions.width)
-
         ctx.value.translate(x, y);
-        // ctx.value.translate(imageDimensions.width/2, 0);
         ctx.value.rotate(rotation);
     
     if (shouldFlip === true) {
         ctx.value.scale(1, -1);
-      
-
-        // ctx.value.save();
-        // ctx.value.beginPath();
-        // ctx.value.moveTo(coordsOne.x, coordsOne.y);
-        // ctx.value.lineTo(coordsTwo.x, coordsTwo.y);
-        // ctx.value.lineTo(coordsThree.x, coordsThree.y);
-        // ctx.value.clip();
-
         ctx.value.drawImage(image.value, 0, 0);
-        // ctx.value.restore();
-
         ctx.value.scale(1, -1);
     } else {
-        // ctx.value.save();
-        // ctx.value.beginPath();
-        // ctx.value.moveTo(coordsOne.x, coordsOne.y);
-        // ctx.value.lineTo(coordsTwo.x, coordsTwo.y);
-        // ctx.value.lineTo(coordsThree.x, coordsThree.y);
-        // ctx.value.clip();
-
         ctx.value.drawImage(image.value, 0, 0);
-        // ctx.value.restore();
     } 
         ctx.value.rotate(-rotation);
-        // ctx.value.translate(-imageDimensions.width/2, -0);
         ctx.value.translate(-x, -y);
         await nextTick()
-
-       /*  translate(x, y);
-        rotate(rads)
-        if (shouldFlip === true) {
-            scale(-1, 1);
-            image(triangle, 0, 0)
-            scale(-1, 1);
-        } else {
-            image(triangle, 0, 0)
-        }
-        // reset transformations (reverse order in which they were added)
-        rotate(-rads)
-        translate(-x, -y);
-    */
     } else {
         console.error('CTX: is not null check passed but something else went wrong')
     }
 });
 
-// NOT IN USE, use DRAWIMAGESETTEST atm
-const drawImageSet = (() => {
-    const angle = Math.PI / 3;
-    let rotation = angle;
-
-  while (count < its) {
-    rotation = angle * count;
-    drawImage(canvasX, canvasY, rotation)
-
-    shouldFlip = !shouldFlip;
-    count +=1;
-  }
-
-    // aka drawHex
-});
-
-const drawImageSetTest = (() => {
+const drawTriangleHex = (() => {
     const angle = Math.PI / 3;
     let rotation = angle;
     console.log('count is: ' + count)
@@ -138,37 +103,33 @@ const drawImageSetTest = (() => {
 
   while (count < its) {
     rotation = angle * count;
-    drawImage(canvasX, canvasY, rotation)
+    drawTriangle(canvasX, canvasY, rotation)
 
     shouldFlip = !shouldFlip;
     count +=1;
   }
-
-    // aka drawHex
 });
 
 
-function drawImageSetRow(num: number, offset: number) {
+function drawTriangleHexRow(num: number, offset: number) {
   console.log('drawing hex row: ' + num, offset)
   for (let i = 0; i <= canvasDimensions.width + 1; i += 1) {
     if ( i % 2 === 0) {
-      drawImageSetTest();
+      drawTriangleHex();
     }
     canvasX += (imageDimensions.width);
-    // canvasY += triangle.height;
     count = 0;
     console.log(canvasX);
   }
 }
 
-const startDrawing = (async () => {
-        // TEST
-        let addOffset = true;
+const drawHexPattern = (async () => {
+  let addOffset = true;
   let offset = 0;
   const s = imageDimensions.width;
   const h = imageDimensions.height;
   for (let i = 0; i < canvasDimensions.height + 1; i += 1) {
-    drawImageSetRow(i, offset)
+    drawTriangleHexRow(i, offset)
     if (addOffset === true) {
       offset = 0;
     } else {
@@ -195,7 +156,6 @@ onMounted(async() => {
         await nextTick()
         if (image.value instanceof HTMLImageElement) {
             updateImageDimensions(image.value.width, image.value.height)    
-            drawImageSet()
         } else {
                 console.error('IMAGE: error loading image')
             }
