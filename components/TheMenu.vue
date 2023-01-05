@@ -7,8 +7,8 @@
         </div>
         <div class="btn-list menu-item" v-if="currentMode.value === 'draw'">
           <h6 class="lh-spaced fw-medium">Patterns</h6>
-          <MenuButton>Hex Triangles</MenuButton>
-          <MenuButton>Coming Soon</MenuButton>
+          <MenuButton @click="updateSubmode('hex')">Hex Triangles</MenuButton>
+          <MenuButton @click="updateSubmode('rectangle')">Rectangles</MenuButton>
         </div>
         <div class="menu-item flex-column" v-if="currentMode.value === 'draw'">
           <h6 class="lh-spaced fw-medium">Draw Settings</h6>
@@ -51,6 +51,7 @@ const {
   updateCanvasWidth, 
   updateCanvasHeight,
   updateMode,
+  updateSubmode,
   updateGuideDimensions,
 } = useConfigStore()
 

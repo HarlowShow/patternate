@@ -3,7 +3,9 @@ import { defineStore } from 'pinia'
 export const useConfigStore = defineStore('config', () => {
     // mode options
     type Mode = 'draw' | 'guide'
+    type Submode = 'hex' | 'rectangle'
     const mode = ref<Mode>('draw')
+    const submode = ref<Submode>('hex')
 
     // width of the canvas, in number of pattern sets to repeat (i.e. 4 * 4 hexes)
     const canvasDimensions = ref({
@@ -24,6 +26,12 @@ export const useConfigStore = defineStore('config', () => {
 
     const updateMode = (async(opt: Mode) => {
         mode.value = opt;
+        console.log('mode updated to ' + mode.value)
+        await nextTick()
+    })
+
+    const updateSubmode = (async(opt: Submode) => {
+        submode.value = opt;
         console.log('mode updated to ' + mode.value)
         await nextTick()
     })
@@ -67,6 +75,8 @@ export const useConfigStore = defineStore('config', () => {
         updateGuideDimensions,
         guideDimensions,
         updateMode,
+        updateSubmode,
         mode,
+        submode,
     }
 })
