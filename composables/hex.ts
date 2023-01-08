@@ -1,5 +1,6 @@
 import { Ref } from 'vue'
 import { useConfigStore } from '~~/stores/config';
+import { useSideTriangle } from './sidetriangle';
 export function useHex(canvas: HTMLCanvasElement, image: HTMLImageElement) {
     console.log('canvas:', canvas)
     const ctx = canvas.getContext('2d');
@@ -22,19 +23,37 @@ export function useHex(canvas: HTMLCanvasElement, image: HTMLImageElement) {
 
     const drawTriangle = (async (x: number, y: number, rotation: number) => {
             if (ctx !== null) {
+                // ctx.save();
+                // const [one, two, three] = useSideTriangle(height.value, width.value)
+                // ctx.beginPath();
+                // ctx.moveTo(one.x, one.y);
+                // ctx.lineTo(two.x, two.y);
+                // ctx.lineTo(three.x, three.y);
+                // ctx.closePath();
+                // ctx.clip()
                 ctx.translate(x, y);
                 ctx.rotate(rotation);
             
             if (shouldFlip === true) {
                 ctx.scale(1, -1);
+
+                // add a clipping path
+                
+
                 ctx.drawImage(image, 0, 0);
                 ctx.scale(1, -1);
+         
             } else {
                 ctx.drawImage(image, 0, 0);
+         
             } 
                 ctx.rotate(-rotation);
                 ctx.translate(-x, -y);
                 await nextTick()
+                // ctx.restore();
+            }
+            else {
+                console.error('cannot find ctx in drawTriangle: hex.ts')
             }
          
     });

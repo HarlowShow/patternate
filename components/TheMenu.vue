@@ -1,25 +1,33 @@
 <template>
     <div class="menu flex-column">
-        <h5 class="menu-item lh-spaced fw-medium">Patternate</h5>
+        <div class="controls">
+          <button 
+          v-if="isCollapsed===false"
+          @click="isCollapsed=true">-</button>
+          <button 
+          v-else
+          @click="isCollapsed=false">+</button></div>
+        <div class="collapsible" v-if="isCollapsed===false">
+          <h5 class="menu-item lh-spaced fw-medium">Patternate</h5>
         <div class="toggle menu-item flex">
-          <MenuButton @click="updateMode('guide')">Guide Mode</MenuButton>
-          <MenuButton @click="updateMode('draw')">Art Mode</MenuButton>
+          <MenuButton @click="updateMode('guide')">Guide</MenuButton>
+          <MenuButton @click="updateMode('draw')">Art</MenuButton>
         </div>
         <div class="btn-list menu-item" v-if="currentMode.value === 'draw'">
           <h6 class="lh-spaced fw-medium">Patterns</h6>
-          <MenuButton @click="updateSubmode('hex')">Hex Triangles</MenuButton>
+          <MenuButton @click="updateSubmode('hex')">Hexes</MenuButton>
           <MenuButton @click="updateSubmode('rectangle')">Rectangles</MenuButton>
         </div>
         <div class="menu-item flex-column" v-if="currentMode.value === 'draw'">
-          <h6 class="lh-spaced fw-medium">Draw Settings</h6>
+          <h6 class="lh-spaced fw-medium">Settings</h6>
           <div class="inline-input">
-            <label for="width">Width (hexes):</label>
+            <label for="width">Width:</label>
             <input v-model.number="chosenWidth" 
             @change="updateCanvasWidth(chosenWidth)"
             name="width">
           </div>
           <div class="inline-input">
-            <label for="height">Height (hexes):</label>
+            <label for="height">Height:</label>
             <input v-model.number="chosenHeight" 
             @change="updateCanvasHeight(chosenHeight)"
             name="height">
@@ -40,6 +48,8 @@
             <MenuButton @click="updateGuideDimensions('height', guideDimensions.height)">Update</MenuButton>
           </div>
         </div>
+        </div>
+        
     </div>
   </template>
 <script setup lang="ts">
@@ -62,6 +72,7 @@ const { guideDimensions } = storeToRefs(store);
 
 // const width = computed(() => canvasDimensions.width)
 // const height = computed(() => canvasDimensions.height)
+const isCollapsed = ref(false)
 const currentMode = computed(() => mode)
 console.log('mode is: ' + mode)
 console.log('current mode is: ' + currentMode)
@@ -77,6 +88,11 @@ const guideHeight = 0;
       background: #212121;
       min-height: 100vh;
       // min-width: 400px;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: flex-end;
     }
 
     * :not(button, input) { color: #fefefe; }

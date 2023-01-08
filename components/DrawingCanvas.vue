@@ -1,6 +1,7 @@
 <template>
     <div class="image-holder">
-        <img ref="image" class="image" src="~/assets/clipping_demo_three.png"/>
+        <img ref="image" class="image" src="~/assets/images/demo_5.png"/>
+        <img class="image-rect" src="~/assets/demo_output.png"/>
     </div>
       <InnerMenu>
         <InnerMenuButton @click="resetCanvas()">Clear Canvas</InnerMenuButton>
@@ -48,6 +49,16 @@ const drawHexPattern = (() => {
 
 const drawRectPattern = (() => {
   console.log('drawRectPattern')
+  const image = document.getElementsByClassName('image-rect')[0] as HTMLImageElement;
+  updateImageDimensions(image.width, image.height)   
+  const w = canvasDimensions.width;
+  const h = canvasDimensions.height;
+
+  if (canvas.value !== null && image instanceof HTMLImageElement) {
+    ctx.value?.drawImage(image, 0, 0)
+  } else {
+    console.error('error in drawRectPattern')
+  }
 })
 const resetCanvas = (() => {
     updateImageDimensions(image.value.width, image.value.height);
@@ -212,6 +223,10 @@ function draw() {
     background: #ffd9d9;
     height: 400px;
     display: none;
+}
+
+.canvas {
+  // background-color: azure;
 }
 </style>
 
