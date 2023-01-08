@@ -1,6 +1,6 @@
 <template>
     <div class="inner-menu p-md">
-        <div class="flex-start">
+        <div class="icon-holder">
             <slot></slot>   
         </div>
     </div>
@@ -8,6 +8,15 @@
 
 <style lang="scss" scoped>
     .inner-menu {
-        background-color: transparent;
+        background-color: white;
+        border-radius: 20px;
+        padding: $xs;
+        max-width: 100vw;
+        width: 300px;
+    }
+
+    .icon-holder {
+        display: flex;
+        justify-content: space-evenly;
     }
 </style>

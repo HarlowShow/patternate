@@ -4,13 +4,13 @@
         <img class="image-rect" src="~/assets/demo_output.png"/>
     </div>
       <InnerMenu>
-        <InnerMenuButton @click="resetCanvas()">Clear Canvas</InnerMenuButton>
-        <InnerMenuButton @click="saveCanvas()">Save Canvas</InnerMenuButton>
-        <InnerMenuButton v-if="submode === 'hex'" @click="drawHexPattern()">Draw Hex</InnerMenuButton>
-        <InnerMenuButton v-else-if="submode === 'rectangle'" @click="drawRectPattern()">Draw Rect</InnerMenuButton>
-        <div class="flex-column">
-          <InnerMenuButton @click="zoomIn">Zoom In</InnerMenuButton>
-          <InnerMenuButton @click="zoomOut">Zoom Out</InnerMenuButton>
+        <Icon name="fluent:draw-image-20-regular" v-if="submode === 'hex'" @click="drawHexPattern()"></Icon>
+        <Icon name="fluent:draw-image-20-regular" v-else-if="submode === 'rectangle'" @click="drawRectPattern()"></Icon>
+        <Icon name="fluent:save-16-regular" @click="saveCanvas()"></Icon>
+        <Icon name="grommet-icons:power-reset" @click="resetCanvas()"></Icon>
+        <div class="flex">
+          <Icon name="fluent:zoom-in-16-regular" @click="zoomIn"></Icon>
+          <Icon name="fluent:zoom-out-16-regular" @click="zoomOut"></Icon>
         </div>
       </InnerMenu>
 
@@ -203,8 +203,8 @@ onMounted(async() => {
   transform: scale(0.1);
 }
 
-.canvas-wrapper {
-  // position: relative;
+.icon {
+  font-size: 2rem;
 }
 
 .canvas {
