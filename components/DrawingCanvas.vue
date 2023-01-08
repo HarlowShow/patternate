@@ -1,6 +1,6 @@
 <template>
     <div class="image-holder">
-        <img ref="image" class="image" src="~/assets/images/demo_5.png"/>
+        <img ref="image" class="image" src="~/assets/images/demo_4.png"/>
         <img class="image-rect" src="~/assets/demo_output.png"/>
     </div>
       <InnerMenu>
@@ -8,11 +8,18 @@
         <InnerMenuButton @click="saveCanvas()">Save Canvas</InnerMenuButton>
         <InnerMenuButton v-if="submode === 'hex'" @click="drawHexPattern()">Draw Hex</InnerMenuButton>
         <InnerMenuButton v-else-if="submode === 'rectangle'" @click="drawRectPattern()">Draw Rect</InnerMenuButton>
+        <div class="flex-column">
+          <InnerMenuButton @click="zoomIn">Zoom In</InnerMenuButton>
+          <InnerMenuButton @click="zoomOut">Zoom Out</InnerMenuButton>
+        </div>
       </InnerMenu>
 
     <div class="shell">
-      <canvas ref="canvas" class="canvas" :width="canvasWidth" :height="canvasHeight">
-      </canvas>
+      <div class="canvas-wrapper">
+        <canvas ref="canvas" class="canvas" :width="canvasWidth" :height="canvasHeight"
+        :class="zoom">
+        </canvas>
+      </div>
     </div>
 </template>
 
@@ -35,6 +42,19 @@ const canvasHeight = computed(() => canvasDimensions.height * imageDimensions.he
 const canvas: Ref <HTMLCanvasElement | null > = ref(null);
 const ctx: Ref <CanvasRenderingContext2D | null > = ref(null);
 const image = ref();
+const zoomAmount = ref(10);
+
+const zoomIn = (() => {
+  if (zoomAmount.value < 10 && zoomAmount.value >= 0) {
+    zoomAmount.value += 1;
+  }
+})
+
+const zoomOut = (() => {
+  if (zoomAmount.value <= 10 && zoomAmount.value > 1) {
+    zoomAmount.value -= 1;
+  }
+})
 
 const drawHexPattern = (() => {
   const image = document.getElementsByClassName('image')[0];
@@ -45,6 +65,43 @@ const drawHexPattern = (() => {
   } else {
     console.error('error in drawHexNew')
   }
+})
+
+const zoom = computed(() => {
+  let output = 'transform-100'
+  switch(zoomAmount.value) {
+    case 10:
+      output = 'transform-100'
+      break;
+    case 9: 
+      output = 'transform-90'
+      break;
+    case 8:
+      output = 'transform-80'
+      break;
+    case 7:
+      output = 'transform-70'
+      break;
+    case 6:
+      output = 'transform-60'
+      break;
+    case 5:
+      output = 'transform-50'
+    break;
+    case 4:
+      output = 'transform-40'
+    break;
+    case 3:
+      output = 'transform-30'
+    break;
+    case 2:
+      output = 'transform-20'
+    break;
+    case 1:
+      output = 'transform-10'
+    break;
+  }
+  return output;
 })
 
 const drawRectPattern = (() => {
@@ -95,125 +152,6 @@ onMounted(async() => {
             }
         resetCanvas();
 })
-
-
-    
-/* 
-let triangle;
-
-
-// s - the length of a single side
-let s;
-let h;
-// the length of the canvas, determined by the number of hexes along
-let canvasLength;
-let canvasHeight;
-// number of hexagons to tile horizontally. Must be an even no.
-let hexLength = 6;
-let hexHeight = 6;
-
-// running coordinates for drawing the shapes
-let canvasX = 0;
-let canvasY = 0;
-
-shouldFlip = false;
-
-// how many segments needed, in this case 6;
-const its = 6;
-// how many hexes to draw;
-const turns = hexHeight + 1;
-// counts the number of segments used
-let count = 0;
-
-function preload() {
-  triangle = loadImage('../images/triangle_small.png');
-
-}
-
-function setup() {
-  s = triangle.width;
-  h = triangle.height;
-  canvasLength = hexLength * (s * 1.5);
-  canvasHeight = hexHeight * h;
-  canvasX = s;
-  canvasY = 0;
-  createCanvas(canvasLength, canvasHeight);
-  // imageMode(CENTER);
-  // angleMode(DEGREES);
-  noLoop();
-}
-
-function drawTriangle(num, x, y, rads) {
-  // move to starting coordinates
-  translate(x, y);
-  rotate(rads)
-  if (shouldFlip === true) {
-    scale(-1, 1);
-    image(triangle, 0, 0)
-    scale(-1, 1);
-  } else {
-    image(triangle, 0, 0)
-  }
-  // reset transformations (reverse order in which they were added)
-  rotate(-rads)
-  translate(-x, -y);
-  }
-
-
-function drawHex() {
-  const angle = PI / 3;
-  let rotation = angle;
-
-  while (count < its) {
-    rotation = angle * count;
-    drawTriangle(count, canvasX, canvasY, rotation)
-    shouldFlip = !shouldFlip;
-    count +=1;
-    // console.log(`just drew triangle at: ${count -1} with rotation: ${rotation}`);
-  }
-  // TODO: on button press:
-  // saveCanvas('myCanvas', 'png');
-}
-
-function drawHexRow(i, offset) {
-  console.log('drawing hex row: ' + i, offset)
-  for (let i = 0; i <= hexLength; i += 1) {
-    if ( i % 2 === 0) {
-      drawHex();
-    }
-    canvasX += (s * 1.5);
-    // canvasY += triangle.height;
-    count = 0;
-    console.log(canvasX);
-  }
-}
-
-function drawHexes() {
-  let addOffset = true;
-  let offset = 0;
-  for (let i = 0; i < hexHeight + 1; i += 1) {
-    drawHexRow(i, offset)
-    if (addOffset == true) {
-      offset = s/2;
-    } else {
-      offset = -s;
-    }
-    canvasX = 0 - offset;
-    canvasY += h;
-    addOffset = !addOffset;
-  }
-}
-
-function mousePressed() {
-  // // TODO: on button press:
-  // saveCanvas('myCanvas', 'png');
-}
-
-function draw() {
-  background(230);
-  drawHexes();
-}
-*/
 </script>
 
 <style lang="scss">
@@ -225,8 +163,57 @@ function draw() {
     display: none;
 }
 
+.transform-100 {
+  transform: scale(1);
+}
+
+.transform-90 {
+  transform: scale(0.9);
+}
+
+.transform-80 {
+  transform: scale(0.8);
+}
+
+.transform-70 {
+  transform: scale(0.7);
+}
+
+.transform-60 {
+  transform: scale(0.6);
+}
+
+.transform-50 {
+  transform: scale(0.5);
+}
+
+.transform-40 {
+  transform: scale(0.4);
+}
+
+.transform-30 {
+  transform: scale(0.3);
+}
+
+.transform-20 {
+  transform: scale(0.2);
+}
+
+.transform-10 {
+  transform: scale(0.1);
+}
+
+.canvas-wrapper {
+  // position: relative;
+}
+
 .canvas {
   // background-color: azure;
+  transform-origin: top left;
+  // transform: scale(0.5);
+  // position: absolute;
+  // top: 0;
+  // left: 0;
 }
 </style>
 

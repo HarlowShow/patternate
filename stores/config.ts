@@ -9,8 +9,8 @@ export const useConfigStore = defineStore('config', () => {
 
     // width of the canvas, in number of pattern sets to repeat (i.e. 4 * 4 hexes)
     const canvasDimensions = ref({
-        width: 4,
-        height: 4,
+        width: 2,
+        height: 2,
     })
 
     // image dimensions, on load updated to the dimensions of the uploaded image

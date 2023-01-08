@@ -1,12 +1,15 @@
 <template>
     <div class="menu flex-column">
         <div class="controls">
-          <button 
+          <Icon name="mdi:minus-box"
           v-if="isCollapsed===false"
-          @click="isCollapsed=true">-</button>
-          <button 
+          @click="isCollapsed=true">
+          </Icon>
+          <Icon name="mdi:plus-box"
           v-else
-          @click="isCollapsed=false">+</button></div>
+          @click="isCollapsed=false"
+          ></Icon>
+        </div>
         <div class="collapsible" v-if="isCollapsed===false">
           <h5 class="menu-item lh-spaced fw-medium">Patternate</h5>
         <div class="toggle menu-item flex">
