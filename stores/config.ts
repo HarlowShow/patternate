@@ -6,6 +6,7 @@ export const useConfigStore = defineStore('config', () => {
     type Submode = 'hex' | 'rectangle'
     const mode = ref<Mode>('draw')
     const submode = ref<Submode>('hex')
+    const shouldUpdateImageDimensions = ref(false)
 
     // width of the canvas, in number of pattern sets to repeat (i.e. 4 * 4 hexes)
     const canvasDimensions = ref({
@@ -26,13 +27,14 @@ export const useConfigStore = defineStore('config', () => {
 
     const updateMode = (async(opt: Mode) => {
         mode.value = opt;
-        console.log('mode updated to ' + mode.value)
+        // console.log('mode updated to ' + mode.value)
         await nextTick()
     })
 
     const updateSubmode = (async(opt: Submode) => {
         submode.value = opt;
-        console.log('mode updated to ' + mode.value)
+        // console.log('mode updated to ' + mode.value)
+        shouldUpdateImageDimensions.value = true
         await nextTick()
     })
     const updateImageDimensions = ((width: number | SVGAnimatedLength, height: number | SVGAnimatedLength) => {
@@ -41,7 +43,7 @@ export const useConfigStore = defineStore('config', () => {
         } else {
             imageDimensions.value.width = width;
             imageDimensions.value.height = height;
-            console.log('dimension update successful: ' + imageDimensions.value)
+            // console.log('dimension update successful: ' + imageDimensions.value)
         }
     })
 
@@ -71,6 +73,7 @@ export const useConfigStore = defineStore('config', () => {
         imageDimensions,
         updateCanvasWidth,
         updateCanvasHeight,
+        shouldUpdateImageDimensions,
         updateImageDimensions,
         updateGuideDimensions,
         guideDimensions,

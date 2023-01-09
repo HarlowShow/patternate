@@ -47,7 +47,14 @@ const generateTriangle = (() => {
     if (ctxCheck.kind === 'success' && ctx.value !== null) {
         const [coordsOne, coordsTwo, coordsThree] = useTriangle(guideCanvasHeight.value, guideCanvasWidth.value)
 
-        ctx.value.lineWidth = 1.5;
+        // make bg black
+        ctx.value.beginPath();
+        ctx.value.rect(0, 0, guideCanvasWidth.value, guideCanvasHeight.value);
+        ctx.value.fillStyle = 'black';
+        ctx.value.fill();
+        
+        // draw the guide triangle
+        ctx.value.lineWidth = 0.5;
         ctx.value.strokeStyle = 'white';
         ctx.value.beginPath();
         ctx.value.moveTo(coordsOne.x, coordsOne.y);
@@ -87,7 +94,7 @@ const saveGuide = (() => {
 </script>
 
 <style lang="scss" scoped>
-.guide-canvas {
-    background-color: black;
-}
+// .guide-canvas {
+//     // background-color: black;
+// }
 </style>

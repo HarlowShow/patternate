@@ -1,6 +1,6 @@
-import { Ref } from 'vue'
+// import { Ref } from 'vue'
 import { useConfigStore } from '~~/stores/config';
-import { useSideTriangle } from './sidetriangle';
+// import { useSideTriangle } from './sidetriangle';
 export function useHex(canvas: HTMLCanvasElement, image: HTMLImageElement) {
     console.log('canvas:', canvas)
     const ctx = canvas.getContext('2d');
@@ -14,10 +14,10 @@ export function useHex(canvas: HTMLCanvasElement, image: HTMLImageElement) {
     let count = 0;
     // running coordinates for drawing the shapes
     let shouldFlip = false;
-    const width = computed(() => canvasDimensions.width)
-    const height = computed(() => canvasDimensions.height)
-    const canvasWidth = computed(() => canvasDimensions.width * imageDimensions.width)
-    const canvasHeight = computed(() => canvasDimensions.height * imageDimensions.height)
+    // const width = computed(() => canvasDimensions.width)
+    // const height = computed(() => canvasDimensions.height)
+    // const canvasWidth = computed(() => canvasDimensions.width * imageDimensions.width)
+    // const canvasHeight = computed(() => canvasDimensions.height * imageDimensions.height)
     let canvasX = -imageDimensions.width;
     let canvasY = 0;
 
