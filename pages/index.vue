@@ -5,8 +5,11 @@
       <TheMenu />
       </template>
       <div class="outer-wrapper main">
-        <div v-if="chosenMode.value==='draw'">
-          <DrawingCanvas />
+        <div v-if="chosenMode.value==='draw' && chosenSubmode.value === 'hex'">
+          <HexCanvas />
+        </div>
+        <div v-if="chosenMode.value==='draw' && chosenSubmode.value === 'rectangle'">
+          <RectCanvas />
         </div>
         <div v-else>
           <GuideCanvas />
@@ -22,8 +25,9 @@ definePageMeta({
   layout: 'default'
 })
 const store = useConfigStore()
-const { mode } = storeToRefs(store);
-const chosenMode = computed(() => mode )
+const { mode, submode } = storeToRefs(store);
+const chosenMode = computed(() => mode );
+const chosenSubmode = computed(() => submode );
 </script>
 
 <style lang="scss">

@@ -1,11 +1,9 @@
 <template>
     <div class="image-holder">
-        <img ref="image" class="image" src="~/assets/images/demo_9.png"/>
-        <img class="image-rect" src="~/assets/images/demo_rect.png"/>
+        <img ref="image" class="image" src="~/assets/images/demo_rect.png"/>
     </div>
       <InnerMenu>
-        <Icon name="fluent:draw-image-20-regular" v-if="submode === 'hex'" @click="drawHexPattern()"></Icon>
-        <Icon name="fluent:draw-image-20-regular" v-else-if="submode === 'rectangle'" @click="drawRectPattern()"></Icon>
+        <Icon name="fluent:draw-image-20-regular" @click="drawRectPattern()"></Icon>
         <Icon name="fluent:save-16-regular" @click="saveCanvas()"></Icon>
         <Icon name="grommet-icons:power-reset" @click="resetCanvas()"></Icon>
         <div class="flex">
@@ -24,18 +22,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, Ref, watch } from 'vue';
-import { storeToRefs } from 'pinia';
+import { ref, Ref } from 'vue';
 import { nullCheck } from '~~/models/models';
-// import { useTriangle } from '~~/composables/triangle';
 import { useSave } from '~~/composables/save';
 import { useConfigStore } from '~~/stores/config';
-import { useHex } from '~~/composables/hex';
 import { useRect } from '~~/composables/rect';
 
-const store = useConfigStore();
-const { submode } = storeToRefs(store);
-const { shouldUpdateImageDimensions } = storeToRefs(store);
 const { canvasDimensions, updateImageDimensions, imageDimensions } = useConfigStore()
 const canvasWidth = computed(() => canvasDimensions.width * imageDimensions.width)
 const canvasHeight = computed(() => canvasDimensions.height * imageDimensions.height)
@@ -45,22 +37,6 @@ const canvas: Ref <HTMLCanvasElement | null > = ref(null);
 const ctx: Ref <CanvasRenderingContext2D | null > = ref(null);
 const image = ref();
 const zoomAmount = ref(3);
-
-watch(() => shouldUpdateImageDimensions.value, () => {
-    console.log('should update image dimensions changed')
-    if (submode.value === 'rectangle') {
-      const img = document.getElementsByClassName('image-rect')[0]
-      if (img instanceof HTMLImageElement && img !== null && img !== undefined) {
-        updateImageDimensions(img.width, img.height);
-        console.log('rect image dimensions updated')
-      } else {
-        console.error('could not update rect image dimensions, error finding image')
-      }
-    } else {
-      console.error('should update image dimensions changed but submode is not rectangle')
-    }
-    shouldUpdateImageDimensions.value = false;
-})
 
 const zoomIn = (() => {
   if (zoomAmount.value < 10 && zoomAmount.value >= 0) {
@@ -74,27 +50,16 @@ const zoomOut = (() => {
   }
 })
 
-const drawHexPattern = (() => {
+const drawRectPattern = (() => {
   const image = document.getElementsByClassName('image')[0];
   // TBC move all null checks here, could pass in image as well(?)
-  if (canvas.value !== null && image instanceof HTMLImageElement) {
-    const { drawHexPatternNew } = useHex(canvas.value, image);
-    drawHexPatternNew();
-  } else {
-    console.error('error in drawHexNew')
-  }
-})
-
-const drawRectPattern = (() => {
-  console.log('drawRectPattern')
-  const image = document.getElementsByClassName('image-rect')[0];   
   if (canvas.value !== null && image instanceof HTMLImageElement) {
     const { drawRectPattern } = useRect(canvas.value, image);
     drawRectPattern();
   } else {
-    console.error('error in drawRectPattern')
+    console.error('error in drawHexNew')
   }
-  })
+})
  
 
 const zoom = computed(() => {
@@ -139,11 +104,6 @@ const resetCanvas = (() => {
     ctx.value.clearRect(0, 0, canvas.value.width, canvas.value.height);
     } else {
       console.warn('problem in reset canvas finding ctx and/or canvas value')
-    }
-    if (image.value instanceof HTMLImageElement && submode.value === 'hex') {
-        updateImageDimensions(image.value.width, image.value.height)    
-    } else {
-        console.log('image dimensions not updated as rect mode selected')
     }
 })
 

@@ -7,20 +7,40 @@ export function useRect(canvas: HTMLCanvasElement, image: HTMLImageElement) {
 
 const drawRectPattern = (() => {
     console.log('drawRectPattern, image width is: ' + imageDimensions.width)
+    const h = canvasDimensions.height;
+    console.log(h)
+    for (let i = 0; i < h; i+=1) {
+        console.log('drawing rect row')
+        drawRectRow()
+        if (i === h-1) {
+            canvasY = 0;
+        } else {
+            canvasY += imageDimensions.height;
+        }
+    }
     
+})
+
+const drawRectRow = (() => {
     const w = canvasDimensions.width;
     for (let i = 0; i < w; i+=1) {
     console.log('drawing rect number: ' + i)
     console.log('rects along to draw: ' + w)
     drawRect()
-    canvasX += imageDimensions.width;
+    if (i === w-1) {
+        canvasX = 0
+    } else {
+        canvasX += imageDimensions.width;
+    }
     }
 })
 
 const drawRect = (() => {
     if(ctx !== null) {
-        ctx.translate(canvasX, canvasY)
-        ctx.drawImage(image, 0, 0)
+        console.log('canvasX: ' + canvasX)
+        console.log('canvasY: ' + canvasY)
+        // ctx.translate(canvasX, canvasY)
+        ctx.drawImage(image, canvasX, canvasY)
     } else {
         console.error('drawRect: ctx was null')
     }
