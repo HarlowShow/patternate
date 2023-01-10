@@ -34,27 +34,6 @@ const { canvasDimensions, updateImageDimensions, imageDimensions } = useConfigSt
 const canvasWidth = computed(() => canvasDimensions.width * imageDimensions.width)
 const canvasHeight = computed(() => canvasDimensions.height * imageDimensions.height)
 
-const controls: Controls = reactive({
-    draw: false,
-    save: false,
-    reset: false,
-})
-type Controls = {
-    draw: boolean,
-    save: boolean,
-    reset: boolean
-}
-type C = keyof Controls
-
-type Control = 'draw' | 'save' | 'reset'
-const updateControls = ((control: Control) => {
-    Object.keys(controls).forEach(key => {
-        controls[key as C] = false;
-    })
-    controls[control] = true;
-    console.log(controls)
-})
-
 const canvas: Ref <HTMLCanvasElement | null > = ref(null);
 const ctx: Ref <CanvasRenderingContext2D | null > = ref(null);
 const image = ref();
@@ -73,7 +52,6 @@ const zoomOut = (() => {
 })
 
 const drawRectPattern = (() => {
-    updateControls('draw')
   const image = document.getElementsByClassName('image')[0];
   // TBC move all null checks here, could pass in image as well(?)
   if (canvas.value !== null && image instanceof HTMLImageElement) {
@@ -123,7 +101,6 @@ const zoom = computed(() => {
 })
 
 const resetCanvas = (() => {
-    updateControls('reset')
     if (ctx.value !== null && canvas.value !== null) { 
     ctx.value.clearRect(0, 0, canvas.value.width, canvas.value.height);
     } else {
@@ -132,7 +109,6 @@ const resetCanvas = (() => {
 })
 
 const saveCanvas = (() => {
-    updateControls('save')
   if (canvas.value !== null) {
     const dataURL = canvas.value.toDataURL();
           useSave('newdrawing', dataURL) 
