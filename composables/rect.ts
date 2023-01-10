@@ -37,9 +37,6 @@ const drawRectRow = (() => {
 
 const drawRect = (() => {
     if(ctx !== null) {
-        console.log('canvasX: ' + canvasX)
-        console.log('canvasY: ' + canvasY)
-        // ctx.translate(canvasX, canvasY)
         ctx.drawImage(image, canvasX, canvasY)
     } else {
         console.error('drawRect: ctx was null')

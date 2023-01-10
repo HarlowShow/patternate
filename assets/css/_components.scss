@@ -1,0 +1,10 @@
+.icon-btn:focus, .icon-btn.active {
+    // background: #4A3ECC;
+    background: #FFD447;
+    color: black;
+}
+
+.icon-btn:focus {
+    outline: 1px solid #fff;
+    outline-offset: -4px;
+}
