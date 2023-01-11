@@ -3,6 +3,7 @@
         <img ref="image" class="image" src="~/assets/images/demo_12.png"/>
         <img class="image-rect" src="~/assets/images/demo_rect.png"/>
     </div>
+    <div class="menu-container">
       <InnerMenu>
         <Icon name="fluent:draw-image-20-regular" v-if="submode === 'hex'" @click="drawHexPattern()"></Icon>
         <Icon name="fluent:save-16-regular" @click="saveCanvas()"></Icon>
@@ -12,6 +13,7 @@
           <Icon name="fluent:zoom-out-16-regular" @click="zoomOut"></Icon>
         </div>
       </InnerMenu>
+    </div>
 
     <div class="shell">
       <div class="canvas-wrapper">
@@ -142,6 +144,10 @@ onMounted(async() => {
 </script>
 
 <style lang="scss">
+
+.menu-container {
+  width: max-content;
+}
 
 .image-holder {
     width: 400px;

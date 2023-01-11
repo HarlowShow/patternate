@@ -1,7 +1,7 @@
 <template>
     <InnerMenu>
-            <InnerMenuButton @click="generateTriangle()">Give Me Triangle</InnerMenuButton>
-            <InnerMenuButton @click="saveGuide()">Save Guide</InnerMenuButton>
+            <Icon name="fluent:draw-shape-24-regular" @click="generateTriangle()">Give Me Triangle</Icon>
+            <Icon name="fluent:save-16-regular" @click="saveGuide()">Save Guide</Icon>
     </InnerMenu>
     <div class="shell">
         <canvas ref="guideCanvas" class="guide-canvas" :width="guideCanvasWidth" :height="guideCanvasHeight">

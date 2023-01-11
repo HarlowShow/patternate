@@ -19,12 +19,12 @@
     // align-items: flex-start;
     // flex-direction: column;
     // position: relative;
-    background: #DAE0F2;
     padding: $md;
   }
 
 // OPTIONAL: update canvas background here
   canvas {
     background: #ffffff;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     // border: 4px solid lightslategray;
   }

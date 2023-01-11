@@ -11,7 +11,8 @@
 
 <style lang="scss" scoped>
 .app {
-  background-color: #DAE0F2;
+  background-color: #efefef;
   width: 100%;
+  height: 100%;
 }
 </style>

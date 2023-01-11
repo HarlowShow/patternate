@@ -1,5 +1,6 @@
 <template>
-    <div class="menu flex-column">
+  <InnerMenu>
+        <div class="menu flex-column">
         <div class="controls">
           <Icon name="mdi:minus-box"
           v-if="isCollapsed===false"
@@ -11,15 +12,20 @@
           ></Icon>
         </div>
         <div class="collapsible" v-if="isCollapsed===false">
-          <h5 class="menu-item lh-spaced fw-medium">Patternate</h5>
-        <div class="toggle menu-item flex">
-          <MenuButton @click="updateMode('guide')">Guide</MenuButton>
-          <MenuButton @click="updateMode('draw')">Art</MenuButton>
+
+          <div class="toggle menu-item">
+            <h6 class="lh-spaced fw-medium">Mode</h6>
+            <div class="flex-row">
+              <Icon name="ion:easel-outline" @click="updateMode('draw')">Art</Icon>
+              <Icon name="fluent:ruler-24-regular" @click="updateMode('guide')">Guide</Icon>
+            </div>
         </div>
         <div class="btn-list menu-item" v-if="currentMode.value === 'draw'">
           <h6 class="lh-spaced fw-medium">Patterns</h6>
-          <MenuButton @click="updateSubmode('hex')">Hexes</MenuButton>
-          <MenuButton @click="updateSubmode('rectangle')">Rectangles</MenuButton>
+          <div class="flex-row">
+            <Icon name="mdi:hexagon-slice-1" @click="updateSubmode('hex')">Hexes</Icon>
+            <Icon name="zondicons:view-tile" @click="updateSubmode('rectangle')">Rectangles</Icon>
+          </div>
         </div>
         <div class="menu-item flex-column" v-if="currentMode.value === 'draw'">
           <h6 class="lh-spaced fw-medium">Settings</h6>
@@ -42,18 +48,19 @@
             <label for="width">Width (px):</label>
             <input v-model.number="guideDimensions.width" 
             name="width">
-            <MenuButton @click="updateGuideDimensions('width', guideDimensions.width)">Update</MenuButton>
+            <Icon name="material-symbols:check-circle-outline-rounded" @click="updateGuideDimensions('width', guideDimensions.width)">Update</Icon>
           </div>
           <div class="inline-input">
             <label for="height">Height (px):</label>
-            <input v-model.number="guideDimensions.height" 
-            name="height">
-            <MenuButton @click="updateGuideDimensions('height', guideDimensions.height)">Update</MenuButton>
+            <input v-model.number="guideDimensions.height">
+              <Icon name="material-symbols:check-circle-outline-rounded" @click="updateGuideDimensions('height', guideDimensions.height)">Update</Icon>
           </div>
         </div>
         </div>
         
-    </div>
+      </div>
+      </InnerMenu>
+        
   </template>
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
@@ -87,30 +94,28 @@ const guideHeight = 0;
 
 <style lang="scss" scoped>
 
-    .menu {
-      background: #212121;
-      min-height: 100vh;
-      // min-width: 400px;
-    }
+input {
+  height: 1.5rem;
+  border-bottom: 2px solid #efefef;
+  border-radius: 5px;
+  padding-right: $xs;
+}
+
+    // .confirm {
+    //   padding-bottom: 10px;
+    // }
 
     .controls {
       display: flex;
       justify-content: flex-end;
     }
 
-    * :not(button, input) { color: #fefefe; }
-
-    .toggle {
-      display: flex;
-      justify-content: flex-start;
-    }
-
-    .toggle button {
-      max-width: 50%;
-    }
+    // * :not(button, input) { color: #fefefe; }
 
     label {
       font-weight: $font-weight-light;
+      padding-right: $xs;
+      // font-size: 0.8rem;
     }
 
     .btn-list {
@@ -128,7 +133,7 @@ const guideHeight = 0;
     font-size: 1.2rem;
   }
   button, li, ul, label {
-    font-size: 1rem;
+    font-size: 0.8rem;
   }
 }
 
@@ -138,7 +143,7 @@ const guideHeight = 0;
     font-size: 1.3rem;
   }
   button, li, ul, label {
-    font-size: 1.1rem;
+    font-size: 0.8rem;
   }
 }
 
@@ -148,6 +153,8 @@ const guideHeight = 0;
 
     .inline-input {
       display: flex;
+      align-items: center;
+      padding: $xs;
     }
 
     .inline-input > input {
@@ -157,5 +164,9 @@ const guideHeight = 0;
 
     .inline-input > label {
       flex: 3;
+    }
+
+    .inline-input > .icon {
+      padding: 0;
     }
 </style>
