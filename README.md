@@ -4,7 +4,7 @@ Generate tesselated patterns from hand-drawn images.
 
 ## Demo
 
-It currently works with one pattern which uses an equilateral triangle to generate an image of tessalating hexagons
+It currently works with two patterns. The first uses an equilateral triangle to generate an image of tessalating hexagons. The second simply tiles any rectangular image. The guide mode generates a template which can be used as a layer mask when creating images.
 
 Input image: <br />
 <img src="assets/patternate_demo.png" alt="demo input image" />
@@ -13,10 +13,11 @@ Generated Pattern: <br />
 <img src="assets/demo_output.png" alt="demo output image" />
 
 ## Usage
+
 - clone the repo
-- add your input in place of the demo image is:
+- add your input image in place of the demo image:
 ```
-// DrawingCanvas.vue
+// HexCanvas.vue
     <div class="image-holder">
         <img ref="image" class="image" src="~/assets/patternate_demo.png"/>
     </div>
@@ -25,8 +26,9 @@ Generated Pattern: <br />
 
 ## Coming Soon
 
-- improved interface
-- more patterns
+~~- improved interface~~
+- change the background colour of your pattern
+- more pattern modes
 
 ## Contributions
 
