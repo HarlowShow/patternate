@@ -3,9 +3,7 @@
         <img ref="image" class="image" src="~/assets/images/demo_rect.png"/>
     </div>
       <InnerMenu>
-        <button class="icon-btn">
-            <Icon name="fluent:draw-image-20-regular" @click="drawRectPattern()"></Icon>
-        </button>
+        <Icon name="fluent:draw-image-20-regular" @click="drawRectPattern()"></Icon>
         <Icon name="fluent:save-16-regular" @click="saveCanvas()"></Icon>
         <Icon name="grommet-icons:power-reset" @click="resetCanvas()"></Icon>
         <div class="flex">

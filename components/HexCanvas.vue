@@ -21,7 +21,11 @@
     </div>
 
     <div class="shell">
-      <div class="canvas-wrapper">
+      <div class="canvas-wrapper" 
+      :height="canvasHeight" :width="canvasWidth"
+      @drop.prevent="imageDrop($event)"
+      @dragover.prevent
+      >
         <canvas ref="canvas" class="canvas" :width="canvasWidth" :height="canvasHeight"
         :class="zoom">
         </canvas>
@@ -51,6 +55,16 @@ const bgcanvas: Ref <HTMLCanvasElement | null > = ref(null);
 const ctx: Ref <CanvasRenderingContext2D | null > = ref(null);
 const image = ref();
 const zoomAmount = ref(3);
+
+const imageDrop = ((e: DragEvent) => {
+  if (e.dataTransfer !== null) {
+    [...e.dataTransfer.files].forEach((file) => { 
+      console.log(`${file.name}`)
+    })
+  } else {
+    console.warn('error in image drop')
+  }
+})
 
 const zoomIn = (() => {
   if (zoomAmount.value < 10 && zoomAmount.value >= 0) {
