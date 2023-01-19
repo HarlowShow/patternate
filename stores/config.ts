@@ -7,6 +7,7 @@ export const useConfigStore = defineStore('config', () => {
     const mode = ref<Mode>('draw')
     const submode = ref<Submode>('hex')
     const shouldUpdateImageDimensions = ref(false)
+    const bg = ref('#FFFFFF');
 
     // width of the canvas, in number of pattern sets to repeat (i.e. 4 * 4 hexes)
     const canvasDimensions = ref({
@@ -37,6 +38,13 @@ export const useConfigStore = defineStore('config', () => {
         shouldUpdateImageDimensions.value = true
         await nextTick()
     })
+
+    const updateBgColor = ((e: Event) => {
+        const element = e.currentTarget as HTMLInputElement
+        const value = element.value
+        bg.value = value;
+        console.log(bg.value)
+      })
     const updateImageDimensions = ((width: number | SVGAnimatedLength, height: number | SVGAnimatedLength) => {
         if (typeof width !== 'number' || typeof height !== 'number') {
             console.error('non number dimensions are not supported')
@@ -81,5 +89,7 @@ export const useConfigStore = defineStore('config', () => {
         updateSubmode,
         mode,
         submode,
+        updateBgColor,
+        bg,
     }
 })

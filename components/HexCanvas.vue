@@ -1,16 +1,21 @@
 <template>
     <div class="image-holder">
-        <img ref="image" class="image" src="~/assets/images/demo_12.png"/>
-        <img class="image-rect" src="~/assets/images/demo_rect.png"/>
+        <img ref="image" class="image" src="~/assets/images/demo_4.png"/>
     </div>
     <div class="menu-container">
       <InnerMenu>
         <Icon name="fluent:draw-image-20-regular" v-if="submode === 'hex'" @click="drawHexPattern()"></Icon>
         <Icon name="fluent:save-16-regular" @click="saveCanvas()"></Icon>
         <Icon name="grommet-icons:power-reset" @click="resetCanvas()"></Icon>
-        <div class="flex">
+        <input type="color" @change="updateBgColor($event)">
+        <div class="flex compact">
           <Icon name="fluent:zoom-in-16-regular" @click="zoomIn"></Icon>
           <Icon name="fluent:zoom-out-16-regular" @click="zoomOut"></Icon>
+        </div>
+        <div class="flex">
+        </div>
+        <div>
+
         </div>
       </InnerMenu>
     </div>
@@ -33,12 +38,10 @@ import { useConfigStore } from '~~/stores/config';
 import { useHex } from '~~/composables/hex';
 
 const store = useConfigStore();
-const { submode } = storeToRefs(store);
-const { shouldUpdateImageDimensions } = storeToRefs(store);
-const { canvasDimensions, updateImageDimensions, imageDimensions } = useConfigStore()
+const { submode, bg } = storeToRefs(store);
+const { canvasDimensions, updateImageDimensions, updateBgColor, imageDimensions } = useConfigStore()
 const canvasWidth = computed(() => canvasDimensions.width * imageDimensions.width)
 const canvasHeight = computed(() => canvasDimensions.height * imageDimensions.height)
-
 
 const canvas: Ref <HTMLCanvasElement | null > = ref(null);
 const ctx: Ref <CanvasRenderingContext2D | null > = ref(null);
@@ -105,6 +108,7 @@ const zoom = computed(() => {
   }
   return output;
 })
+
 
 const resetCanvas = (() => {
     if (ctx.value !== null && canvas.value !== null) { 
@@ -198,6 +202,11 @@ onMounted(async() => {
 
 .icon {
   font-size: 2rem;
+}
+
+.compact > .icon {
+  padding: 0;
+  padding-top: $xs;
 }
 
 .canvas {

@@ -1,4 +1,5 @@
 // import { Ref } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useConfigStore } from '~~/stores/config';
 // import { useSideTriangle } from './sidetriangle';
 export function useHex(canvas: HTMLCanvasElement, image: HTMLImageElement) {
@@ -6,7 +7,9 @@ export function useHex(canvas: HTMLCanvasElement, image: HTMLImageElement) {
     const ctx = canvas.getContext('2d');
     console.log('ctx:', ctx);
     console.log('image: ' + image )
-
+    // const store = useConfigStore()
+    // const { bg } = storeToRefs(store)
+    // const testBg = '#000dbb'
     const { canvasDimensions, imageDimensions } = useConfigStore()
     // how many segments needed for an image set, in this case 6 for a hex;
     const its = 6;
@@ -87,6 +90,15 @@ export function useHex(canvas: HTMLCanvasElement, image: HTMLImageElement) {
     }
     
     const drawHexPatternNew = (async () => {
+      // update the bg color: TEST MODE
+      // const col = testBg;
+      // if (ctx !== null) {
+      //   ctx.fillStyle = 'red';
+      //   ctx.fillRect(0, 0, canvasDimensions.height, canvasDimensions.width)
+      // } else {
+      //   console.error('ctx was null when applying color')
+      // }
+
       let addOffset = true;
       let offset = 0;
       const s = imageDimensions.width;

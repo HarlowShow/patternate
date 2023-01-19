@@ -27,7 +27,7 @@ Generated Pattern: <br />
 ## Coming Soon
 
 ~~- improved interface~~
-- change the background colour of your pattern
+- add a background colour to patterns with transparency
 - more pattern modes
 
 ## Contributions
