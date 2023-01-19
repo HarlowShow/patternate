@@ -27,7 +27,7 @@ Generated Pattern: <br />
 
 ## Coming Soon
 
-~~- improved interface~~
+~~- improved interface~~<br/>
 ~~- add a background colour to patterns with transparency~~
 - drag and drop image upload
 - more pattern modes
