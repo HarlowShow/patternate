@@ -236,8 +236,5 @@ onMounted(async() => {
 .canvas {
   z-index: 1;
 }
-.bgcanvas {
-  border: 3px solid red;
-}
 </style>
 
