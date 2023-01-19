@@ -25,6 +25,9 @@
         <canvas ref="canvas" class="canvas" :width="canvasWidth" :height="canvasHeight"
         :class="zoom">
         </canvas>
+        <canvas ref="bgcanvas" class="bgcanvas" :width="canvasWidth" :height="canvasHeight"
+        :class="zoom">
+        </canvas>
       </div>
     </div>
 </template>
@@ -33,7 +36,7 @@
 import { ref, Ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { nullCheck } from '~~/models/models';
-import { useSave } from '~~/composables/save';
+import { useSave, useMerge } from '~~/composables/save';
 import { useConfigStore } from '~~/stores/config';
 import { useHex } from '~~/composables/hex';
 
@@ -44,6 +47,7 @@ const canvasWidth = computed(() => canvasDimensions.width * imageDimensions.widt
 const canvasHeight = computed(() => canvasDimensions.height * imageDimensions.height)
 
 const canvas: Ref <HTMLCanvasElement | null > = ref(null);
+const bgcanvas: Ref <HTMLCanvasElement | null > = ref(null);
 const ctx: Ref <CanvasRenderingContext2D | null > = ref(null);
 const image = ref();
 const zoomAmount = ref(3);
@@ -120,9 +124,12 @@ const resetCanvas = (() => {
 })
 
 const saveCanvas = (() => {
-  if (canvas.value !== null) {
-    const dataURL = canvas.value.toDataURL();
-          useSave('newdrawing', dataURL) 
+  let newURL;
+  if (canvas.value !== null && bgcanvas.value !== null) {
+    newURL = useMerge(bgcanvas.value, canvas.value)
+    useSave('newdrawing', newURL) 
+  } else {
+    console.warn('error saving canvas as at least one canvas value was null')
   }
 })
 
@@ -209,13 +216,28 @@ onMounted(async() => {
   padding-top: $xs;
 }
 
-.canvas {
+.canvas-wrapper {
+  position: relative;
+}
+
+.canvas, .bgcanvas {
   // background-color: azure;
   transform-origin: top left;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: transparent;
   // transform: scale(0.5);
   // position: absolute;
   // top: 0;
   // left: 0;
+}
+
+.canvas {
+  z-index: 1;
+}
+.bgcanvas {
+  border: 3px solid red;
 }
 </style>
 

@@ -40,10 +40,24 @@ export const useConfigStore = defineStore('config', () => {
     })
 
     const updateBgColor = ((e: Event) => {
-        const element = e.currentTarget as HTMLInputElement
-        const value = element.value
-        bg.value = value;
-        console.log(bg.value)
+        const canvas = document.getElementsByClassName('bgcanvas')[0]
+        if (canvas instanceof HTMLCanvasElement) {
+            const ctx = canvas.getContext('2d');
+            if (ctx !== null) {
+                const element = e.currentTarget as HTMLInputElement
+                const value = element.value
+                bg.value = value;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = value;
+                ctx.fillRect(0, 0, canvas.width, canvas.height)
+                console.log(bg.value)
+            } else {
+                console.warn('error finding ctx')
+            }
+        } else {
+            console.warn('bg canvas not found')
+        }
+
       })
     const updateImageDimensions = ((width: number | SVGAnimatedLength, height: number | SVGAnimatedLength) => {
         if (typeof width !== 'number' || typeof height !== 'number') {

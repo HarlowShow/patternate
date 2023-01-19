@@ -11,7 +11,7 @@
         <div v-if="chosenMode.value==='draw' && chosenSubmode.value === 'rectangle'">
           <RectCanvas />
         </div>
-        <div v-else>
+        <div v-else-if="chosenMode.value === 'guide'">
           <GuideCanvas />
         </div>
       </div>
