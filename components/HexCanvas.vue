@@ -1,6 +1,7 @@
 <template>
     <div class="image-holder">
-        <img ref="image" class="image" src="~/assets/images/demo_4.png"/>
+        <img ref="image" class="image" src="~/assets/images/demo_26.png"/>
+        <img class="input" :src="`~/assets/images/${inputSrc}.png`"/>
     </div>
     <div class="menu-container">
       <InnerMenu>
@@ -55,14 +56,38 @@ const bgcanvas: Ref <HTMLCanvasElement | null > = ref(null);
 const ctx: Ref <CanvasRenderingContext2D | null > = ref(null);
 const image = ref();
 const zoomAmount = ref(3);
+const inputSrc = ref('demo_26')
 
-const imageDrop = ((e: DragEvent) => {
-  if (e.dataTransfer !== null) {
-    [...e.dataTransfer.files].forEach((file) => { 
-      console.log(`${file.name}`)
-    })
+const imageDrop = (async(e: DragEvent) => {
+  if (e.dataTransfer !== null && e.dataTransfer.files !== null) {
+      const imageFile = validateImage([...e.dataTransfer.files]);
+      const imageURL = URL.createObjectURL(imageFile);
+      console.log(imageURL)
+      const newImage = document.getElementsByClassName('input')[0] as HTMLImageElement;
+      newImage.src = imageURL
+      await nextTick();
+        if (canvas.value !== null && newImage instanceof HTMLImageElement) {
+        const { drawHexPatternNew } = useHex(canvas.value, newImage);
+        drawHexPatternNew();
+      } else {
+        console.error('error in drawHexNew')
+      }
   } else {
     console.warn('error in image drop')
+  }
+})
+
+const validateImage = ((files: File[]): File => {
+  // check only one has been uploaded
+  if (files.length !== 1) {
+    throw new Error('upload must be single file')
+  } else {
+    const file = files[0];
+    if (file.type !== 'image/png' && file.type !== 'image/jpeg') {
+    throw new Error('file must be image type: accepted formats are .png and .jpeg')
+    } else {
+      return file;
+    }
   }
 })
 
