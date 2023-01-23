@@ -66,12 +66,14 @@ const imageDrop = (async(e: DragEvent) => {
       const newImage = document.getElementsByClassName('input')[0] as HTMLImageElement;
       newImage.src = imageURL
       await nextTick();
+      setTimeout(() => {
         if (canvas.value !== null && newImage instanceof HTMLImageElement) {
         const { drawHexPatternNew } = useHex(canvas.value, newImage);
         drawHexPatternNew();
       } else {
         console.error('error in drawHexNew')
       }
+      }, 500)
   } else {
     console.warn('error in image drop')
   }

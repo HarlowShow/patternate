@@ -29,7 +29,7 @@ Generated Pattern: <br />
 
 ~~- improved interface~~<br/>
 ~~- add a background colour to patterns with transparency~~
-- drag and drop image upload
+~~- drag and drop image upload~~
 - more pattern modes
 
 ## Contributions
