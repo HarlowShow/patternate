@@ -17,7 +17,7 @@ import { useConfigStore } from '~~/stores/config';
 import { useTriangle } from '~~/composables/triangle';
 import { useSave } from '~~/composables/save';
 const store = useConfigStore()
-const { guideDimensions } = storeToRefs(store);
+const { guideDimensions, submode } = storeToRefs(store);
 
 const guideCanvasHeight = computed(() => guideDimensions.value.height + (guideDimensions.value.height / 10))
 const guideCanvasWidth = computed(() => guideDimensions.value.width + (guideDimensions.value.width / 10))
@@ -42,6 +42,28 @@ const ctx: Ref <CanvasRenderingContext2D | null > = ref(null);
         await nextTick()
 })
 
+    const generateHexTriangle = (() => {
+        const ctxCheck = nullCheck<CanvasRenderingContext2D>(ctx);
+        if (ctxCheck.kind === 'success' && ctx.value !== null) {
+        const [coordsOne, coordsTwo, coordsThree] = useTriangle(guideCanvasHeight.value, guideCanvasWidth.value)
+
+        ctx.value.lineWidth = 0.5;
+        ctx.value.strokeStyle = 'white';
+        ctx.value.beginPath();
+        ctx.value.moveTo(coordsOne.x, coordsOne.y);
+        ctx.value.lineTo(coordsTwo.x, coordsTwo.y);
+        ctx.value.lineTo(coordsThree.x, coordsThree.y);
+        ctx.value.closePath();
+        ctx.value.fillStyle = 'white';
+        ctx.value.fill();
+        ctx.value.stroke();
+        } else {
+            console.error('GUIDE CTX: null check failed in generateHexTriangle')
+        }
+    })
+const generateOctTriangle = (() => {
+    console.log('generateOctTriangle')
+})
 const generateTriangle = (() => {
     const ctxCheck = nullCheck<CanvasRenderingContext2D>(ctx);
     if (ctxCheck.kind === 'success' && ctx.value !== null) {
@@ -53,26 +75,14 @@ const generateTriangle = (() => {
         ctx.value.fillStyle = 'black';
         ctx.value.fill();
         
-        // draw the guide triangle
-        ctx.value.lineWidth = 0.5;
-        ctx.value.strokeStyle = 'white';
-        ctx.value.beginPath();
-        ctx.value.moveTo(coordsOne.x, coordsOne.y);
-        ctx.value.lineTo(coordsTwo.x, coordsTwo.y);
-        ctx.value.lineTo(coordsThree.x, coordsThree.y);
-        ctx.value.closePath();
-        ctx.value.fillStyle = 'white';
-        ctx.value.fill();
-        ctx.value.stroke();
-
-        // TODO: refactor so it's an accurate outline and not just hodgepodge
-        // ctx.value.beginPath();
-        // ctx.value.moveTo(0, refCanvasHeight.value);
-        // ctx.value.lineTo(refCanvasWidth.value, refCanvasHeight.value);
-        // ctx.value.lineTo(refCanvasWidth.value / 2, 0);
-        // ctx.value.closePath();
-        // ctx.value.stroke();
-        // ctx.value.fill();
+        switch(submode.value) {
+            case 'hex':
+            generateHexTriangle()
+            break;
+            case 'hexouter':
+            generateOctTriangle()
+            break;
+        } 
     } else {
         console.error('GUIDE CTX: null check failed')
     }

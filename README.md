@@ -16,7 +16,7 @@ Generated Pattern: <br />
 
 - clone the repo
 - upload your input image to the /assets/images folder
-- add your input image in place of the demo image:
+- add your input image in place of the demo image, or drag and drop the image to the canvas
 ```
 // HexCanvas.vue
     <div class="image-holder">

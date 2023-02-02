@@ -12,7 +12,8 @@
 <style lang="scss" scoped>
 .app {
   background-color: #efefef;
-  width: 100%;
+  width: 100vw;
   height: 100vh;
+  overflow: scroll;
 }
 </style>

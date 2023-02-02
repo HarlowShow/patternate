@@ -16,15 +16,16 @@
           <div class="toggle menu-item">
             <h6 class="lh-spaced fw-medium">Mode</h6>
             <div class="flex-row">
-              <Icon name="ion:easel-outline" @click="updateMode('draw')">Art</Icon>
-              <Icon name="fluent:ruler-24-regular" @click="updateMode('guide')">Guide</Icon>
+              <Icon name="ion:easel-outline" :class="[mode === 'draw' ? activeClass : '']" @click="updateMode('draw')">Art</Icon>
+              <Icon name="fluent:ruler-24-regular" :class="[mode === 'guide' ? activeClass : '']" @click="updateMode('guide')">Guide</Icon>
             </div>
         </div>
-        <div class="btn-list menu-item" v-if="currentMode.value === 'draw'">
+        <div class="btn-list menu-item">
           <h6 class="lh-spaced fw-medium">Patterns</h6>
           <div class="flex-row">
-            <Icon name="mdi:hexagon-slice-1" @click="updateSubmode('hex')">Hexes</Icon>
-            <Icon name="zondicons:view-tile" @click="updateSubmode('rectangle')">Rectangles</Icon>
+            <Icon name="mdi:hexagon-slice-1" :class="[submode === 'hex' ? activeClass : '']" @click="updateSubmode('hex')">Hexes</Icon>
+            <Icon name="mdi:octagon-outline" :class="[submode === 'hexouter' ? activeClass : '']" @click="updateSubmode('hexouter')">Hexes</Icon>
+            <Icon v-if="currentMode.value === 'draw'" :class="[submode === 'rectangle' ? activeClass : '']" name="zondicons:view-tile" @click="updateSubmode('rectangle')">Rectangles</Icon>
           </div>
         </div>
         <div class="menu-item flex-column" v-if="currentMode.value === 'draw'">
@@ -76,9 +77,8 @@ const {
 } = useConfigStore()
 
 const store = useConfigStore()
-const { mode } = storeToRefs(store);
+const { mode, submode } = storeToRefs(store);
 const { guideDimensions } = storeToRefs(store);
-
 
 // const width = computed(() => canvasDimensions.width)
 // const height = computed(() => canvasDimensions.height)
@@ -88,8 +88,7 @@ console.log('mode is: ' + mode)
 console.log('current mode is: ' + currentMode)
 const chosenWidth = 0;
 const chosenHeight = 0;
-const guideWidth = 0;
-const guideHeight = 0;
+const activeClass = 'active';
 </script>
 
 <style lang="scss" scoped>
@@ -145,6 +144,11 @@ input {
   button, li, ul, label {
     font-size: 0.8rem;
   }
+}
+
+.active {
+  background-color: #efefef;
+  border-radius: 15px;
 }
 
     .menu-item {

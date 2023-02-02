@@ -6,13 +6,16 @@
       </template>
       <div class="outer-wrapper main">
         <div v-if="chosenMode.value==='draw' && chosenSubmode.value === 'hex'">
-          <HexCanvas />
+          <CanvasHex />
+        </div>
+        <div v-if="chosenMode.value==='draw' && chosenSubmode.value === 'hexouter'">
+          <CanvasHexOuter />
         </div>
         <div v-if="chosenMode.value==='draw' && chosenSubmode.value === 'rectangle'">
-          <RectCanvas />
+          <CanvasRect />
         </div>
         <div v-else-if="chosenMode.value === 'guide'">
-          <GuideCanvas />
+          <CanvasGuideHex />
         </div>
       </div>
     </NuxtLayout>

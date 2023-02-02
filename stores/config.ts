@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 export const useConfigStore = defineStore('config', () => {
     // mode options
     type Mode = 'draw' | 'guide'
-    type Submode = 'hex' | 'rectangle'
+    type Submode = 'hex' | 'rectangle' | 'hexouter'
     const mode = ref<Mode>('draw')
     const submode = ref<Submode>('hex')
     const shouldUpdateImageDimensions = ref(false)
@@ -11,8 +11,8 @@ export const useConfigStore = defineStore('config', () => {
 
     // width of the canvas, in number of pattern sets to repeat (i.e. 4 * 4 hexes)
     const canvasDimensions = ref({
-        width: 2,
-        height: 2,
+        width: 6,
+        height: 5,
     })
 
     // image dimensions, on load updated to the dimensions of the uploaded image
@@ -68,7 +68,6 @@ export const useConfigStore = defineStore('config', () => {
             // console.log('dimension update successful: ' + imageDimensions.value)
         }
     })
-
     const updateGuideDimensions = ((toChange: 'width' | 'height', x: number) => {
         if (toChange === 'width') { 
             guideDimensions.value.width = x;
