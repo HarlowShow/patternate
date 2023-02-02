@@ -4,13 +4,37 @@ Generate tesselated patterns from hand-drawn images.
 
 ## Demo
 
-It currently works with two patterns. The first uses an equilateral triangle to generate an image of tessalating hexagons. The second simply tiles any rectangular image. The guide mode generates a template which can be used as a layer mask when creating images.
+It currently works with three patterns. 
+
+### Hex
+Uses an equilateral triangle to generate an image of tessalating hexagons.
 
 Input image: <br />
-<img src="assets/demo/demo_input.png" alt="demo input image" />
+<img src="assets/demo/demo_input.png" alt="demo hex input image" />
 
 Generated Pattern: <br />
-<img src="assets/demo/demo_output.png" alt="demo output image" />
+<img src="assets/demo/demo_output.png" alt="demo hex output image" />
+
+### Hex Outer
+Tiles a triangular shape around a hexagon.
+
+Input image: <br />
+<img src="assets/demo/demo_hex_outer_input.png" alt="demo hex outer input image" />
+
+Generated Pattern: <br />
+<img src="assets/demo/demo_hex_outer_output.png" alt="demo hex outer output image" />
+
+### Rectangle
+Tiles any rectangular image.
+
+Input image: <br />
+<img src="assets/demo/demo_rect_input.png" alt="demo rectangle input image" />
+
+Generated Pattern: <br />
+<img src="assets/demo/demo_rect_output.png" alt="demo rectangle output image" />
+
+## Guide Mode
+The guide mode generates a template which can be used as a layer mask when creating images.
 
 ## Usage
 
