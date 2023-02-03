@@ -46,10 +46,10 @@ import { useConfigStore } from '~~/stores/config';
 import { useHex } from '~~/composables/hex';
 
 const store = useConfigStore();
-const { submode, bg } = storeToRefs(store);
-const { canvasDimensions, updateImageDimensions, updateBgColor, imageDimensions } = useConfigStore()
-const canvasWidth = computed(() => canvasDimensions.width * imageDimensions.width)
-const canvasHeight = computed(() => canvasDimensions.height * imageDimensions.height)
+const { submode, imageDimensions } = storeToRefs(store);
+const { canvasDimensions, updateImageDimensions, updateBgColor } = useConfigStore()
+const canvasWidth = computed(() => canvasDimensions.width * imageDimensions.value.width)
+const canvasHeight = computed(() => canvasDimensions.height * imageDimensions.value.height)
 
 const canvas: Ref <HTMLCanvasElement | null > = ref(null);
 const bgcanvas: Ref <HTMLCanvasElement | null > = ref(null);
@@ -65,6 +65,9 @@ const imageDrop = (async(e: DragEvent) => {
       console.log(imageURL)
       const newImage = document.getElementsByClassName('input')[0] as HTMLImageElement;
       newImage.src = imageURL
+      newImage.onload = (() => {
+        updateImageDimensions(newImage.width, newImage.height)
+      })
       await nextTick();
       setTimeout(() => {
         if (canvas.value !== null && newImage instanceof HTMLImageElement) {

@@ -65,6 +65,9 @@ const imageDrop = (async(e: DragEvent) => {
       console.log(imageURL)
       const newImage = document.getElementsByClassName('input')[0] as HTMLImageElement;
       newImage.src = imageURL
+      newImage.onload = (() => {
+        updateImageDimensions(newImage.width, newImage.height)
+      })
       await nextTick();
       setTimeout(() => {
         if (canvas.value !== null && newImage instanceof HTMLImageElement) {
