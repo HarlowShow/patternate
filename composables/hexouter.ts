@@ -11,7 +11,7 @@ export function useOct(canvas: HTMLCanvasElement, image: HTMLImageElement) {
     // counter for each turn
     let count = 0;
     // running coordinates for drawing the shapes
-    let canvasX = 0;
+    let canvasX = -imageDimensions.width;
     let canvasY = 0;
 
     const drawTriangle = (async (x: number, y: number, rotation: number) => {
@@ -45,7 +45,7 @@ export function useOct(canvas: HTMLCanvasElement, image: HTMLImageElement) {
         if ( i % 2 === 0) {
           drawHex();
         }
-        canvasX += (imageDimensions.width* 1.25);
+        canvasX += (imageDimensions.width * 1.25);
         count = 0;
         console.log(canvasX);
       }
