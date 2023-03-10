@@ -44,6 +44,7 @@ import { nullCheck } from '~~/models/models';
 import { useSave, useMerge } from '~~/composables/save';
 import { useConfigStore } from '~~/stores/config';
 import { useHex } from '~~/composables/hex';
+import { useDrop } from '~~/composables/drop';
 
 const store = useConfigStore();
 const { submode, imageDimensions } = storeToRefs(store);
@@ -59,16 +60,7 @@ const zoomAmount = ref(3);
 const inputSrc = ref('demo_26')
 
 const imageDrop = (async(e: DragEvent) => {
-  if (e.dataTransfer !== null && e.dataTransfer.files !== null) {
-      const imageFile = validateImage([...e.dataTransfer.files]);
-      const imageURL = URL.createObjectURL(imageFile);
-      console.log(imageURL)
-      const newImage = document.getElementsByClassName('input')[0] as HTMLImageElement;
-      newImage.src = imageURL
-      newImage.onload = (() => {
-        updateImageDimensions(newImage.width, newImage.height)
-      })
-      await nextTick();
+      const newImage = await useDrop(e);
       setTimeout(() => {
         if (canvas.value !== null && newImage instanceof HTMLImageElement) {
         const { drawHexPatternNew } = useHex(canvas.value, newImage);
@@ -77,23 +69,6 @@ const imageDrop = (async(e: DragEvent) => {
         console.error('error in drawHexNew')
       }
       }, 500)
-  } else {
-    console.warn('error in image drop')
-  }
-})
-
-const validateImage = ((files: File[]): File => {
-  // check only one has been uploaded
-  if (files.length !== 1) {
-    throw new Error('upload must be single file')
-  } else {
-    const file = files[0];
-    if (file.type !== 'image/png' && file.type !== 'image/jpeg') {
-    throw new Error('file must be image type: accepted formats are .png and .jpeg')
-    } else {
-      return file;
-    }
-  }
 })
 
 const zoomIn = (() => {
@@ -110,7 +85,6 @@ const zoomOut = (() => {
 
 const drawHexPattern = (() => {
   const image = document.getElementsByClassName('image')[0];
-  // TBC move all null checks here, could pass in image as well(?)
   if (canvas.value !== null && image instanceof HTMLImageElement) {
     const { drawHexPatternNew } = useHex(canvas.value, image);
     drawHexPatternNew();

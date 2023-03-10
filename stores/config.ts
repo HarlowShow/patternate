@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 export const useConfigStore = defineStore('config', () => {
     // mode options
     type Mode = 'draw' | 'guide'
-    type Submode = 'hex' | 'rectangle' | 'hexouter'
+    type Submode = 'hex' | 'rectangle' | 'hexouter' | 'arrow'
     const mode = ref<Mode>('draw')
     const submode = ref<Submode>('hex')
     const shouldUpdateImageDimensions = ref(false)
@@ -70,12 +70,32 @@ export const useConfigStore = defineStore('config', () => {
     })
     const updateGuideDimensions = ((toChange: 'width' | 'height', x: number) => {
         if (toChange === 'width') { 
-            guideDimensions.value.width = x;
-            guideDimensions.value.height = (Math.sqrt(3)/2) * x
+            switch(submode.value) {
+                case 'hex':
+                    guideDimensions.value.width = x;
+                    guideDimensions.value.height = (Math.sqrt(3)/2) * x;
+                    break;
+                case 'hexouter':
+                    guideDimensions.value.width = x;
+                    guideDimensions.value.height = x * 1.207;
+                    break;
+                default:
+                    guideDimensions.value.width = x;
+            }
         } else if (toChange === 'height') {
-            guideDimensions.value.height = x;
-            // TODO: use formula, temp solution only
-            guideDimensions.value.width = x * 1.154701;
+            switch(submode.value) {
+                case 'hex':
+                    guideDimensions.value.height = x;
+                    // TODO: use formula, temp solution only
+                    guideDimensions.value.width = x * 1.154701;
+                    break;
+                case 'hexouter':
+                    guideDimensions.value.height = x;
+                    guideDimensions.value.height = x * 0.8284;
+                    break;
+                default:
+                    guideDimensions.value.height = x;
+            }
         }
     })
 

@@ -1,11 +1,11 @@
 <template>
     <div class="image-holder">
-        <img ref="image" class="image" src="~/assets/images/oct_test_3.png"/>
+        <img ref="image" class="image" src="~/assets/images/chevron_2.png"/>
         <img class="input" :src="`~/assets/images/${inputSrc}.png`"/>
     </div>
     <div class="menu-container">
       <InnerMenu>
-        <Icon name="fluent:draw-image-20-regular" v-if="submode === 'hexouter'" @click="drawOctPattern()"></Icon>
+        <Icon name="fluent:draw-image-20-regular" v-if="submode === 'arrow'" @click="drawArrowPattern()"></Icon>
         <Icon name="fluent:save-16-regular" @click="saveCanvas()"></Icon>
         <Icon name="grommet-icons:power-reset" @click="resetCanvas()"></Icon>
         <input type="color" @change="updateBgColor($event)">
@@ -43,14 +43,14 @@ import { storeToRefs } from 'pinia';
 import { nullCheck } from '~~/models/models';
 import { useSave, useMerge } from '~~/composables/save';
 import { useConfigStore } from '~~/stores/config';
-import { useOct } from '~~/composables/hexouter';
+import { useArrow } from '~~/composables/arrow';
 import { useDrop } from '~~/composables/drop';
 
 const store = useConfigStore();
-const { submode } = storeToRefs(store);
-const { canvasDimensions, updateImageDimensions, updateBgColor, imageDimensions } = useConfigStore()
-const canvasWidth = computed(() => canvasDimensions.width * imageDimensions.width)
-const canvasHeight = computed(() => canvasDimensions.height * imageDimensions.height)
+const { submode, imageDimensions } = storeToRefs(store);
+const { canvasDimensions, updateImageDimensions, updateBgColor } = useConfigStore()
+const canvasWidth = computed(() => canvasDimensions.width * imageDimensions.value.width)
+const canvasHeight = computed(() => canvasDimensions.height * imageDimensions.value.height)
 
 const canvas: Ref <HTMLCanvasElement | null > = ref(null);
 const bgcanvas: Ref <HTMLCanvasElement | null > = ref(null);
@@ -60,29 +60,15 @@ const zoomAmount = ref(3);
 const inputSrc = ref('demo_26')
 
 const imageDrop = (async(e: DragEvent) => {
-  const newImage = await useDrop(e);
+      const newImage = await useDrop(e);
       setTimeout(() => {
         if (canvas.value !== null && newImage instanceof HTMLImageElement) {
-        const { drawPattern } = useOct(canvas.value, newImage);
-        drawPattern();
+        const { drawHexPatternNew } = useHex(canvas.value, newImage);
+        drawHexPatternNew();
       } else {
         console.error('error in drawHexNew')
       }
       }, 500)
-})
-
-const validateImage = ((files: File[]): File => {
-  // check only one has been uploaded
-  if (files.length !== 1) {
-    throw new Error('upload must be single file')
-  } else {
-    const file = files[0];
-    if (file.type !== 'image/png' && file.type !== 'image/jpeg') {
-    throw new Error('file must be image type: accepted formats are .png and .jpeg')
-    } else {
-      return file;
-    }
-  }
 })
 
 const zoomIn = (() => {
@@ -97,11 +83,10 @@ const zoomOut = (() => {
   }
 })
 
-const drawOctPattern = (() => {
+const drawArrowPattern = (() => {
   const image = document.getElementsByClassName('image')[0];
-  // TBC move all null checks here, could pass in image as well(?)
   if (canvas.value !== null && image instanceof HTMLImageElement) {
-    const { drawPattern } = useOct(canvas.value, image);
+    const { drawPattern } = useArrow(canvas.value, image);
     drawPattern();
   } else {
     console.error('error in drawHexNew')
