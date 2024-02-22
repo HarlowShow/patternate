@@ -25,7 +25,6 @@
           <div class="flex-row">
             <Icon name="mdi:hexagon-slice-1" :class="[submode === 'hex' ? activeClass : '']" @click="updateSubmode('hex')">Hexes</Icon>
             <Icon name="mdi:octagon-outline" :class="[submode === 'hexouter' ? activeClass : '']" @click="updateSubmode('hexouter')">Hexes</Icon>
-            <Icon name="mdi:arrow-down-bold-box-outline" :class="[submode === 'arrow' ? activeClass : '']" @click="updateSubmode('arrow')">Arrow</Icon>
             <Icon v-if="currentMode.value === 'draw'" :class="[submode === 'rectangle' ? activeClass : '']" name="zondicons:view-tile" @click="updateSubmode('rectangle')">Rectangles</Icon>
           </div>
         </div>

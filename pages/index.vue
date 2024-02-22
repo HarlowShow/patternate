@@ -14,10 +14,7 @@
         <div v-if="chosenMode.value==='draw' && chosenSubmode.value === 'rectangle'">
           <CanvasRect />
         </div>
-        <div v-if="chosenMode.value==='draw' && chosenSubmode.value === 'arrow'">
-          <CanvasArrow />
-        </div>
-        <div v-else-if="chosenMode.value === 'guide'">
+        <div v-if="chosenMode.value === 'guide'">
           <CanvasGuideHex />
         </div>
       </div>
